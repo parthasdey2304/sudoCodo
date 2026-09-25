@@ -18,6 +18,7 @@ const nav = [
   { href: "/music", label: "Music", icon: "🎵", desc: "Compose with blocks" },
   { href: "/pond", label: "Pond", icon: "🦆", desc: "Code duel vs AI" },
   { href: "/monkey-code", label: "Monkey Coding Jr.", icon: "🐒", desc: "Block Sequencing & Loops" },
+  { href: "/legal", label: "Legal", icon: "⚖️", desc: "Terms, privacy & compliance" },
 ];
 
 export default function Header() {

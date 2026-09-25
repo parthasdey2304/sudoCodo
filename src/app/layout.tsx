@@ -193,7 +193,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   <a href="/sitemap.xml" className="text-[11px] font-bold px-2.5 py-1 rounded-full border border-slate-200 bg-slate-50 hover:bg-white transition dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200">Sitemap</a>
                   <a href="/robots.txt" className="text-[11px] font-bold px-2.5 py-1 rounded-full border border-slate-200 bg-slate-50 hover:bg-white transition dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200">Robots</a>
                   <a href="/" className="text-[11px] font-bold px-2.5 py-1 rounded-full border border-slate-200 bg-slate-50 hover:bg-white transition dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200">Home</a>
+                  <a href="/legal" className="text-[11px] font-bold px-2.5 py-1 rounded-full border border-slate-200 bg-slate-50 hover:bg-white transition dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200">⚖️ Legal</a>
                 </div>
+                <nav aria-label="Legal documents" className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-[11px] font-semibold text-slate-500 dark:text-slate-400">
+                  <a href="/legal/terms" className="hover:text-indigo-600 underline-offset-4 hover:underline">Terms</a>
+                  <a href="/legal/privacy" className="hover:text-indigo-600 underline-offset-4 hover:underline">Privacy</a>
+                  <a href="/legal/dpdp" className="hover:text-indigo-600 underline-offset-4 hover:underline">DPDP</a>
+                  <a href="/legal/security" className="hover:text-indigo-600 underline-offset-4 hover:underline">Security</a>
+                </nav>
               </div>
             </div>
 
