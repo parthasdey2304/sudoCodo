@@ -212,7 +212,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
             {/* Giant steel wordmark — condensed blades */}
             <div className="mt-6 overflow-hidden" aria-hidden="true">
-              <p className="text-center font-black tracking-tight leading-none text-[19vw] md:text-[9rem] select-none scale-x-[0.8] bg-gradient-to-br from-slate-500 via-slate-800 to-slate-950 bg-clip-text text-transparent [-webkit-text-stroke:1px_rgba(15,23,42,0.35)] [filter:drop-shadow(0_2px_10px_rgba(100,116,139,0.35))] dark:from-white dark:via-slate-200 dark:to-slate-400 dark:[-webkit-text-stroke:1px_rgba(255,255,255,0.45)] dark:[filter:drop-shadow(0_2px_16px_rgba(255,255,255,0.25))]">
+              <p className="text-center font-black tracking-tight leading-none text-[19vw] md:text-[9rem] select-none scale-x-[0.8] text-transparent [-webkit-text-stroke:2px_rgba(100,116,139,0.8)] dark:[-webkit-text-stroke:2px_rgba(255,255,255,0.9)]">
                 SUDO CODO
               </p>
             </div>
