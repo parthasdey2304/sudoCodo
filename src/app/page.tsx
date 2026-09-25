@@ -126,6 +126,13 @@ export default function Home() {
                   >
                     🐒 Monkey Game
                   </Link>
+                  <Link
+                    href="/duels"
+                    className="px-6 py-3 rounded-full bg-black/15 border-2 border-yellow-300/70 backdrop-blur text-white font-black text-sm hover:bg-yellow-300 hover:text-slate-900 transition shadow-[0_0_20px_-4px_rgba(255,214,0,0.7)]"
+                    aria-label="Open Matrix math battles in the Duels Arena"
+                  >
+                    🧮 Matrix
+                  </Link>
                 </nav>
                 {/* visual stat tiles */}
                 <div className="mt-6 grid grid-cols-4 gap-2 max-w-lg" role="list" aria-label="Stats">
