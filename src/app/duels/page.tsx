@@ -4,7 +4,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import { JsonLd, breadcrumbSchema, softwareAppSchema } from "@/components/JsonLd";
 import { SITE_URL } from "@/lib/seo";
 
-const TITLE = "Duels Arena - Math, Memory, Puzzle Battles | SudoCodo";
+const TITLE = "Duels Arena - Math, Memory, Puzzle Battles";
 const DESC =
   "Battle in Math, Memory, Puzzle & Logic duels — speed arithmetic, grid flash, truth tables. Win rating points, all saved locally, no login.";
 const CANONICAL = `${SITE_URL}/duels`;
@@ -41,7 +41,6 @@ export default function DuelsPage() {
     <>
       <JsonLd data={[breadcrumb, app]} />
       <Breadcrumbs items={[{ name: "Home", href: "/" }, { name: "Duels Arena", href: "/duels", current: true }]} />
-      <div className="sr-only"><h1>Duels Arena — Math, Memory, Puzzle & Logic Battles</h1></div>
       <DuelsClient />
     </>
   );

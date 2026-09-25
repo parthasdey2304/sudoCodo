@@ -35,7 +35,6 @@ export default function PuzzlePage() {
     <>
       <JsonLd data={[breadcrumb, course]} />
       <Breadcrumbs items={[{ name: "Home", href: "/" }, { name: "Puzzle Coding Game", href: "/puzzle", current: true }]} />
-      <div className="sr-only"><h1>Puzzle Coding Game — Learn Block Shapes</h1></div>
       <GameClient />
       <section className="max-w-6xl mx-auto px-4 pb-8" aria-labelledby="puzzle-seo">
         <h2 id="puzzle-seo" className="font-black text-slate-900 mt-4">Why start with Puzzle?</h2>

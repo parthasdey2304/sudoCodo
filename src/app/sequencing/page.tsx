@@ -46,10 +46,7 @@ export default function SequencingPage() {
     <>
       <JsonLd data={[breadcrumb, course, app]} />
       <Breadcrumbs items={[{ name: "Home", href: "/" }, { name: "Sequencing Game", href: "/sequencing", current: true }]} />
-      <div className="sr-only">
-        <h1>Sequencing Game — Order Code Like CodeMonkey</h1>
-        <p>8 levels of banana-collecting sequencing puzzles. Learn order matters, repeat blocks &amp; obstacle avoidance.</p>
-      </div>
+      {/* Single H1 lives in GameShell (SSR'd) — no duplicate needed */}
       <GameClient />
       <section className="max-w-6xl mx-auto px-4 pb-8" aria-labelledby="seq-seo">
         <h2 id="seq-seo" className="font-black text-slate-900 mt-4">How sequencing teaches coding</h2>

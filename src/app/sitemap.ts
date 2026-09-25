@@ -4,10 +4,11 @@ import { SITE_URL } from "@/lib/seo";
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
   const routes: { path: string; priority: number; changeFreq: "daily" | "weekly" | "monthly" }[] = [
-    { path: "/", priority: 1.0, changeFreq: "weekly" },
+    { path: "/", priority: 1.0, changeFreq: "daily" },
     { path: "/duels", priority: 0.95, changeFreq: "daily" },
     { path: "/dailies", priority: 0.95, changeFreq: "daily" },
     { path: "/ascenso", priority: 0.9, changeFreq: "weekly" },
+    { path: "/monkey-code", priority: 0.9, changeFreq: "weekly" },
     { path: "/sequencing", priority: 0.9, changeFreq: "weekly" },
     { path: "/maze", priority: 0.9, changeFreq: "weekly" },
     { path: "/puzzle", priority: 0.8, changeFreq: "monthly" },

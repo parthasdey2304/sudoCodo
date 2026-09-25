@@ -4,7 +4,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import { JsonLd, breadcrumbSchema, softwareAppSchema } from "@/components/JsonLd";
 import { SITE_URL } from "@/lib/seo";
 
-const TITLE = "Daily Challenges - Sudoku, KenKen & Quizzes | SudoCodo";
+const TITLE = "Daily Challenges - Sudoku, KenKen & Quizzes";
 const DESC =
   "New boards every midnight — Sudoku, Cross Math, KenKen, Math Maze, Divisions & Pin Ball Recall. Earn pi, keep streaks, free with no login.";
 const CANONICAL = `${SITE_URL}/dailies`;
@@ -41,7 +41,6 @@ export default function DailiesPage() {
     <>
       <JsonLd data={[breadcrumb, app]} />
       <Breadcrumbs items={[{ name: "Home", href: "/" }, { name: "Daily Challenges", href: "/dailies", current: true }]} />
-      <div className="sr-only"><h1>Daily Challenges — Sudoku, KenKen, Divisions & Memory</h1></div>
       <DailiesClient />
     </>
   );

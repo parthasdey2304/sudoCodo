@@ -25,5 +25,11 @@ const nextConfig = {
     formats: ["image/avif", "image/webp"],
     dangerouslyAllowSVG: true,
   },
+  async redirects() {
+    return [
+      // Short alias so /arena deep links (sitemap, ads, QR) resolve instead of 404
+      { source: "/arena", destination: "/duels", permanent: true },
+    ];
+  },
 };
 export default nextConfig;

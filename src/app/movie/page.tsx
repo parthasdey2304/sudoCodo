@@ -36,7 +36,6 @@ export default function MoviePage() {
     <>
       <JsonLd data={[breadcrumb, app]} />
       <Breadcrumbs items={[{ name: "Home", href: "/" }, { name: "Movie Animation", href: "/movie", current: true }]} />
-      <div className="sr-only"><h1>Movie Animation Game — Code with Math</h1></div>
       <GameClient />
       <section className="max-w-6xl mx-auto px-4 pb-8" aria-labelledby="movie-seo">
         <h2 id="movie-seo" className="font-black text-slate-900 mt-4">Animate with formulas</h2>

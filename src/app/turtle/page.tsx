@@ -36,7 +36,6 @@ export default function TurtlePage() {
     <>
       <JsonLd data={[breadcrumb, app]} />
       <Breadcrumbs items={[{ name: "Home", href: "/" }, { name: "Turtle Draw", href: "/turtle", current: true }]} />
-      <div className="sr-only"><h1>Turtle Draw with Code — Loops & Geometry</h1></div>
       <GameClient />
       <section className="max-w-6xl mx-auto px-4 pb-8" aria-labelledby="turtle-seo">
         <h2 id="turtle-seo" className="font-black text-slate-900 mt-4">Loops that draw</h2>

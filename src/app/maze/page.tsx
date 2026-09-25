@@ -58,11 +58,7 @@ export default function MazePage() {
           { name: "Maze Coding Game", href: "/maze", current: true },
         ]}
       />
-      {/* SEO: server-rendered H1 wrapper ensures crawlable primary keyword even before hydration */}
-      <div className="sr-only">
-        <h1>Maze Coding Game — Loops & Logic Puzzles</h1>
-        <p>10-level block maze game to learn loops and conditionals. Guide the pegman to the flag.</p>
-      </div>
+      {/* Single H1 lives in GameShell (SSR'd) — no duplicate needed */}
       <GameClient />
       <section className="max-w-6xl mx-auto px-4 pb-8" aria-labelledby="maze-seo">
         <h2 id="maze-seo" className="font-black text-slate-900 mt-4">About this maze game</h2>

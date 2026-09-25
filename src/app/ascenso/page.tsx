@@ -4,7 +4,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import { JsonLd, breadcrumbSchema, courseSchema } from "@/components/JsonLd";
 import { SITE_URL } from "@/lib/seo";
 
-const TITLE = "Ascenso Nivel Ruta - 10-Level Coding Climb | SudoCodo";
+const TITLE = "Ascenso Nivel Ruta - 10-Level Coding Climb";
 const DESC =
   "Climb the Ascenso Nivel Ruta — 10 gamified coding levels from Puzzle to Pond Champion. Unlock nodes, earn pi, play free with no login.";
 const CANONICAL = `${SITE_URL}/ascenso`;
@@ -40,7 +40,6 @@ export default function AscensoPage() {
     <>
       <JsonLd data={[breadcrumb, course]} />
       <Breadcrumbs items={[{ name: "Home", href: "/" }, { name: "Ascenso Nivel Ruta", href: "/ascenso", current: true }]} />
-      <div className="sr-only"><h1>Ascenso Nivel Ruta — 10-Level Coding Climb</h1></div>
       <AscensoClient />
     </>
   );
