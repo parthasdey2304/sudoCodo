@@ -1,24 +1,26 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import Header from "@/components/Header";
+import BottomNav from "@/components/BottomNav";
 import { JsonLd, websiteSchema, organizationSchema } from "@/components/JsonLd";
 import { SITE_URL, SITE_NAME, SITE_TAGLINE, LOGO_URL, DEFAULT_OG_IMAGE } from "@/lib/seo";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Block Coding Games for Kids - Play & Learn | SudoCodo",
-    template: "%s | SudoCodo",
+    default: "sudoCodo: Interactive Coding & Math Games for Kids",
+    template: "%s | sudoCodo",
   },
   description:
-    "Play 8 block-coding games for kids — Puzzle, Maze, Bird, Turtle, Movie, Music, Pond & CodeMonkey sequencing. No login, portrait-first, saves progress locally.",
+    "Play coding & math games — Duels Arena, Ascenso levels, Daily Sudoku & KenKen, plus 8 block-coding games. Free, no login, portrait-first, saves progress locally.",
   keywords: [
+    "coding games for kids",
+    "math games for students",
     "block coding for kids",
     "blockly games",
     "codemonkey sequencing",
-    "learn to code with blocks",
-    "maze coding game",
-    "turtle coding",
+    "daily sudoku kids",
+    "math duels",
     "kids coding games online",
   ],
   authors: [{ name: "SudoCodo" }],
@@ -34,9 +36,9 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: SITE_URL,
     siteName: SITE_NAME,
-    title: "Block Coding Games for Kids - Play & Learn | SudoCodo",
+    title: "sudoCodo: Interactive Coding & Math Games for Kids",
     description:
-      "A modern, mobile-first playground with 8 block-coding games. Puzzle, Maze, Bird, Turtle, Movie, Music, Pond & CodeMonkey sequencing — free, offline, no login.",
+      "A modern playground with coding & math games — Duels Arena, Ascenso levels, Daily Challenges plus 8 block-coding games. Free, offline, no login.",
     images: [
       {
         url: DEFAULT_OG_IMAGE,
@@ -49,9 +51,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Block Coding Games for Kids - Play & Learn | SudoCodo",
+    title: "sudoCodo: Interactive Coding & Math Games for Kids",
     description:
-      "8 block-coding games for kids — Puzzle, Maze, Bird & CodeMonkey sequencing. Portrait-friendly, saves progress, no login.",
+      "Duels, Ascenso levels, Daily Sudoku & 8 block-coding games. Portrait-friendly, saves progress, no login.",
     images: [DEFAULT_OG_IMAGE],
     creator: "@sudocodo",
   },
@@ -68,12 +70,11 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/favicon.ico", sizes: "any" },
-      { url: "/icon-192.png", type: "image/png", sizes: "192x192" },
-      { url: "/icon-512.png", type: "image/png", sizes: "512x512" },
+      { url: "/favicon.svg", type: "image/svg+xml", sizes: "any" },
+      { url: "/icon.svg", type: "image/svg+xml", sizes: "512x512" },
     ],
-    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
-    shortcut: "/favicon.ico",
+    apple: [{ url: "/icon.svg", type: "image/svg+xml", sizes: "any" }],
+    shortcut: "/favicon.svg",
   },
   manifest: "/manifest.webmanifest",
   category: "education",
@@ -89,12 +90,12 @@ export const viewport: Viewport = {
   maximumScale: 5,
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#6366f1" },
-    { media: "(prefers-color-scheme: dark)", color: "#0f172a" },
+    { media: "(prefers-color-scheme: dark)", color: "#0B0E14" },
   ],
-  colorScheme: "light dark",
+  colorScheme: "dark light",
 };
 
-const THEME_SCRIPT = `(function(){try{var t=localStorage.getItem('sudocodo_theme');var d=t?t==='dark':window.matchMedia('(prefers-color-scheme: dark)').matches;if(d)document.documentElement.classList.add('dark');}catch(e){}})();`;
+const THEME_SCRIPT = `(function(){try{var t=localStorage.getItem('sudocodo_theme');var d=t?t==='dark':true;if(d)document.documentElement.classList.add('dark');}catch(e){document.documentElement.classList.add('dark');}})();`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -108,7 +109,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Theme init — avoids light flash, persisted in localStorage */}
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
       </head>
-      <body className="min-h-screen bg-[#f8f9ff] text-slate-800 antialiased selection:bg-indigo-100 dark:bg-slate-950 dark:text-slate-100">
+      <body className="min-h-screen bg-[#f8f9ff] text-slate-800 antialiased selection:bg-indigo-100 dark:bg-[#0B0E14] dark:text-slate-100 transition-colors duration-300">
         {/* Structured Data: WebSite + Organization — enables Sitelinks Searchbox */}
         <JsonLd
           data={[
@@ -165,8 +166,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
               {/* Games nav — pill grid, portrait-friendly */}
               <nav aria-label="Footer navigation" className="rounded-2xl border border-slate-200 bg-white p-4 dark:bg-slate-900 dark:border-slate-800">
-                <h3 className="font-bold text-slate-900 dark:text-white text-xs tracking-widest">ALL GAMES 🎮</h3>
+                <h3 className="font-bold text-slate-900 dark:text-white text-xs tracking-widest">ARENA & GAMES 🎮</h3>
                 <ul className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+                  <li><a href="/duels" className="block px-3 py-1.5 rounded-xl bg-yellow-100 border border-yellow-300 text-[13px] font-semibold hover:opacity-90 transition text-slate-800 dark:bg-yellow-950 dark:border-yellow-800 dark:text-yellow-200">⚔️ Duels Arena</a></li>
+                  <li><a href="/ascenso" className="block px-3 py-1.5 rounded-xl bg-violet-100 border border-violet-300 text-[13px] font-semibold hover:opacity-90 transition text-slate-800 dark:bg-violet-950 dark:border-violet-800 dark:text-violet-200">🗺️ Ascenso Ruta</a></li>
+                  <li><a href="/dailies" className="block px-3 py-1.5 rounded-xl bg-amber-100 border border-amber-300 text-[13px] font-semibold hover:opacity-90 transition text-slate-800 dark:bg-amber-950 dark:border-amber-800 dark:text-amber-200">📅 Daily Challenges</a></li>
                   <li><a href="/puzzle" className="block px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-[13px] font-semibold hover:bg-white hover:border-indigo-300 hover:text-indigo-700 transition dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200 dark:hover:border-indigo-500">🧩 Puzzle — block shapes</a></li>
                   <li><a href="/maze" className="block px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-[13px] font-semibold hover:bg-white hover:border-indigo-300 hover:text-indigo-700 transition dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200 dark:hover:border-indigo-500">🧭 Maze — loops & puzzles</a></li>
                   <li><a href="/sequencing" className="block px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-[13px] font-semibold hover:bg-white hover:border-indigo-300 hover:text-indigo-700 transition dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200 dark:hover:border-indigo-500">🐒 Sequencing — CodeMonkey</a></li>
@@ -199,6 +203,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </div>
           </div>
         </footer>
+
+        {/* Bottom tab bar (mobile) + spacer so content never hides behind it */}
+        <div className="h-[64px] md:hidden" aria-hidden="true" />
+        <BottomNav />
       </body>
     </html>
   );

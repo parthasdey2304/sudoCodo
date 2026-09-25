@@ -9,8 +9,8 @@ export default function ThemeToggle({ compact = false }: { compact?: boolean }) 
     setMounted(true);
     try {
       const saved = localStorage.getItem("sudocodo_theme");
-      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      const isDark = saved ? saved === "dark" : prefersDark;
+      // Dark mode is the default (Matiks-style); only explicit "light" opts out
+      const isDark = saved ? saved === "dark" : true;
       setDark(isDark);
       document.documentElement.classList.toggle("dark", isDark);
     } catch {}
