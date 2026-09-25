@@ -1,38 +1,45 @@
-# SudoCodo — Learn to Code with Blocks
+# sudoCodo — Interactive Coding & Math Games for Kids
 
-> **Modern, portrait-first web app copying Blockly Games + CodeMonkey Junior.** 8 block-coding games, 60+ levels, no login, progress saved in your browser.
+> **Modern, portrait-first Next.js web app: Blockly Games + CodeMonkey Junior + Matiks-style arena.** 9 block-coding games, Duels Arena, Ascenso level track, Daily Challenges — no login, progress saved in your browser.
 
 ![Next.js 15](https://img.shields.io/badge/Next.js-15-black) ![React 19](https://img.shields.io/badge/React-19-61DAFB) ![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38BDF8) ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6) ![License](https://img.shields.io/badge/license-MIT-green)
 
-**Live:** `https://sudocodo.com` (placeholder — replace `SITE_URL` in `src/lib/seo.ts`)  
-**Stack:** Next.js 15 (App Router) · React 19 · Tailwind CSS (utility-only) · TypeScript · Next Metadata API
+**Live:** `https://sudocodo.robogyaan.in` (canonical `SITE_URL` in `src/lib/seo.ts`; `/arena` redirects to `/duels`)
+**Stack:** Next.js 15.5 (App Router, static export-friendly SSG) · React 19 · Tailwind CSS (utility-only, `darkMode: "class"`) · TypeScript · Next Metadata API
 
 ---
 
-## 🎮 Games (8/8)
+## 🎮 Games (9 block games + arena)
 
 | Route | Game | Levels | What kids learn |
 |-------|------|--------|-----------------|
 | `/puzzle` | **Puzzle** 🧩 | 4 | Block shapes & snapping — first Blockly game |
 | `/maze` | **Maze** 🧭 | 10 | Sequencing, loops (`repeat`), `if path ahead` → guide pegman to 🚩 |
-| `/sequencing` | **Sequencing** 🐒 | 8 | CodeMonkey-style order matters — collect 🍌, avoid 🌳 (ported from `app.codemonkey.com/junior/chapters/sequencing`) |
+| `/sequencing` | **Sequencing** 🐒 | 8 | CodeMonkey-style order matters — collect 🍌, avoid 🌳 |
 | `/bird` | **Bird** 🐦 | 10 | Conditionals (`if worm ahead`) & repeat flight |
 | `/turtle` | **Turtle** 🐢 | ∞ canvas | Loops & geometry — square, star, spiral, saves `localStorage` |
 | `/movie` | **Movie** 🎬 | 4 scenes | Math animation — `x = f(t)`, `y = f(t)`, `sin/cos` |
 | `/music` | **Music** 🎵 | Studio | Notes `C–C2`, tempo/volume, Web Audio API |
 | `/pond` | **Pond** 🦆 | vs AI | Scan/fire/swim loop — code duel vs AI duck |
+| `/monkey-code` | **Monkey Coding Jr.** 🐒 | 6 | Visual sequencing + live Python mirror (`hero.move_right()`, `for _ in range(n)`), stars |
+| `/duels` | **Duels Arena** ⚔️ | 16 duels | Math/Memory/Puzzle/Logic battles, Elo from ★1000, +15 per win |
+| `/ascenso` | **Ascenso Ruta** 🗺️ | 10 nodes | Nivel Ruta climb across all games, PLAY/JUGAR, +5π per node |
+| `/dailies` | **Daily Challenges** 📅 | 7 games/day | Sudoku, Cross Math, KenKen, Math Maze, Divisions, Pin Recall; π milestones |
 
-Home at `/` is a blockly.games-style grid with hero, feature strip, and SEO text section.
+Home at `/` is a blockly.games-style grid with tall visual hero, mascot parade, adventure roadmap, Arena Hub previews (`#feed`), and SEO text section. Mobile bottom tab bar: Arena · Ascenso · Compete · Dailies · Feed · More.
 
 ---
 
 ## ✨ Key Features
 
-- **Portrait-first, phone-responsive:** Tailwind only (`src/app/globals.css` holds only `@tailwind` directives). Canvas top + toolbox bottom on phones, side-by-side on desktop, no horizontal scroll. Tested at 375px.
-- **No auth, local cache:** `localStorage` keys `sudocodo_progress` + `sudocodo_level_*` — level, stars, last drawing/song. Works offline after first load. “Reset progress” clears cache.
+- **Next.js App Router (SSG) — not an SPA:** every route prerenders to static HTML, so crawlers index titles, H1s and JSON-LD on first hit. No `index.html` shell, no router fallback needed.
+- **Portrait-first, phone-responsive:** Tailwind only. Canvas top + toolbox bottom on phones, side-by-side on desktop, no horizontal scroll. Tested at 375px.
+- **Kid-easy:** ♾️ unlimited workspace (ON by default), 💡 hints, ✨ Magic Solve (BFS auto-solver in Maze/Sequencing/Bird), encouraging messages, par-based stars.
+- **Light & dark mode:** class-based toggle in navbar (persisted `sudocodo_theme`, dark default `#0B0E14`), fullscreen hamburger menu with all routes.
+- **No auth, local cache:** `sudocodo_progress` + `sudocodo_level_*` (games), `sudocodo_monkey_progress` (monkey stars), `sudocodo_duels_rating` (Elo), `sudocodo_dailies_v1` (auto-resets daily), `sudocodo_ascenso_v1` (nodes), `sudocodo_pi_bank` (all-time π). Works offline after first load.
 - **Crisp modern UI:** Rounded 2xl cards, gradients, backdrop-blur, `hover:shadow-xl`, `focus-visible:ring`.
-- **Production SEO (see below):** Unique titles/descriptions (50–60 / 140–160 chars), canonicals, OG/Twitter, `robots.txt`, `sitemap.xml`, `manifest.webmanifest`, JSON-LD (WebSite + Organization + BreadcrumbList + Course/SoftwareApplication), semantic HTML, one H1 per page.
-- **60+ levels total** with hint bars and max-block constraints matching Blockly/CodeMonkey pedagogy.
+- **Production SEO (see below):** Unique titles/descriptions, canonicals, OG/Twitter, `robots.txt`, `sitemap.xml` (13 URLs), `manifest.webmanifest`, JSON-LD (WebSite with brand `alternateName` + Organization + BreadcrumbList + Course/SoftwareApplication), semantic HTML, exactly one H1 per page.
+- **80+ levels total** across games, duels, dailies and the Ascenso track.
 
 ---
 
@@ -59,26 +66,36 @@ src/
     layout.tsx          # Global SEO head, WebSite+Organization JSON-LD, semantic <header>/<main>/<footer>
     page.tsx            # Home — H1, ItemList + BreadcrumbList JSON-LD, semantic sections
     robots.ts           # → /robots.txt (allow /, sitemap)
-    sitemap.ts          # → /sitemap.xml (9 URLs, priority, changeFreq)
+    sitemap.ts          # → /sitemap.xml (13 URLs, priority, changeFreq)
     manifest.ts         # → /manifest.webmanifest (PWA, portrait-primary)
-    puzzle/page.tsx     # Server metadata + breadcrumb JSON-LD → GameClient
+    puzzle/page.tsx     # Server metadata + breadcrumb JSON-LD → GameClient (same split for every game)
     maze/page.tsx       # 10-level maze, etc.
     sequencing/page.tsx # 8-level CodeMonkey clone
+    monkey-code/        # MonkeyCodeClient (SVG stage, tray, Python mirror) + page.tsx (SEO)
+    duels/              # DuelsClient (categories, quiz, memory games) + page.tsx
+    ascenso/            # AscensoClient (Nivel Ruta track) + page.tsx
+    dailies/            # DailiesClient (countdown, tabs, 7 games) + page.tsx
     bird/GameClient.tsx # "use client" — interactive logic (same for each game)
     turtle/GameClient.tsx
     movie/GameClient.tsx
     music/GameClient.tsx
     pond/GameClient.tsx
   components/
-    Header.tsx          # <header role="banner"> + <nav aria-label="Primary"> keyword-rich anchors
+    Header.tsx          # <header role="banner"> + <nav aria-label="Primary"> + fullscreen menu (all routes)
+    BottomNav.tsx       # Mobile tab bar: Arena · Ascenso · Compete · Dailies · Feed · More
+    ThemeToggle.tsx     # Light/dark toggle, persisted, dark default
+    HomeHub.tsx         # Homepage arena previews (live ratings/ascenso/countdown) + #feed anchor
+    DuelQuiz.tsx        # Generic 5-round quiz engine for duels
     GameCard.tsx        # <article> + descriptive aria-label, focus ring
-    GameShell.tsx       # <section aria-labelledby> + <header> H1 + <section> canvas + <aside> toolbox
-    BlockWorkspace.tsx  # Toolbox (palette) + Workspace (stack) — tap to add, drag to reorder, Tailwind
+    GameShell.tsx       # <section aria-labelledby> + single H1 + <section> canvas + <aside> toolbox
+    BlockWorkspace.tsx  # Toolbox + unlimited Workspace (toggle) — tap to add, drag to reorder, Tailwind
     Breadcrumbs.tsx     # <nav aria-label="Breadcrumb"> ordered list
-    JsonLd.tsx          # websiteSchema, organizationSchema, breadcrumbSchema, softwareAppSchema, courseSchema
+    JsonLd.tsx          # websiteSchema (+brand alternateName), organizationSchema, breadcrumbSchema, softwareAppSchema, courseSchema
   lib/
-    seo.ts              # SITE_URL, SEO per-route titles/descriptions (50–60 / 140–160), OG placeholders
+    seo.ts              # SITE_URL (robogyaan.in), per-route titles/descriptions, OG placeholders
     storage.ts          # getLevel/setLevel, getProgress/setGameProgress (localStorage)
+    progress.ts         # ProgressService: ratings, dailies w/ 24h reset, ascenso, π bank, countdown hook
+    duels.ts            # Duel categories, accent colors, question generators
 public/
   favicon.ico, icon-192.png, icon-512.png, apple-touch-icon.png
   og/og-*.png           # 1200×630 OG placeholders — REPLACE with real 1200×630 assets
