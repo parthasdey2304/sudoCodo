@@ -1,8 +1,8 @@
-export const SITE_URL = "https://sudocodo.com";
-export const SITE_NAME = "SudoCodo";
-export const SITE_TAGLINE = "Learn to Code with Blocks";
+export const SITE_URL = "https://sudocodo.robogyaan.in";
+export const SITE_NAME = "sudoCodo";
+export const SITE_TAGLINE = "Interactive Coding & Math Games for Kids & Students";
 export const DEFAULT_OG_IMAGE = `${SITE_URL}/og/og-home.png`; // 1200x630 absolute placeholder — replace with real asset
-export const LOGO_URL = `${SITE_URL}/icon-512.png`;
+export const LOGO_URL = `${SITE_URL}/icon.svg`;
 export const TWITTER_HANDLE = "@sudocodo";
 
 export type PageSeo = {
@@ -15,11 +15,11 @@ export type PageSeo = {
 
 export const SEO: Record<string, PageSeo> = {
   home: {
-    title: "Block Coding Games for Kids - Play & Learn | SudoCodo",
-    description: "Play 8 block-coding games for kids — Puzzle, Maze, Bird, Turtle, Music & CodeMonkey sequencing. No login, portrait-friendly, saves progress locally.",
+    title: "sudoCodo: Interactive Coding & Math Games for Kids",
+    description: "Play coding & math games — Duels Arena, Ascenso levels, Daily Sudoku & KenKen, plus 8 block-coding games. Free, no login, saves progress locally.",
     canonical: `${SITE_URL}/`,
     ogImage: `${SITE_URL}/og/og-home.png`,
-    keywords: ["block coding for kids", "blockly games", "codemonkey sequencing", "learn to code blocks"],
+    keywords: ["coding games for kids", "math games", "blockly games", "codemonkey sequencing", "daily sudoku kids", "math duels"],
   },
   puzzle: {
     title: "Puzzle Coding Game - Learn Block Shapes | SudoCodo",

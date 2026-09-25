@@ -6,6 +6,9 @@ import ThemeToggle from "./ThemeToggle";
 
 const nav = [
   { href: "/", label: "All Games", icon: "🎮", desc: "Home — 8 games" },
+  { href: "/duels", label: "Duels Arena", icon: "⚔️", desc: "Math, memory, puzzle battles" },
+  { href: "/ascenso", label: "Ascenso", icon: "🗺️", desc: "10-level Nivel Ruta climb" },
+  { href: "/dailies", label: "Dailies", icon: "📅", desc: "Fresh boards every midnight" },
   { href: "/puzzle", label: "Puzzle", icon: "🧩", desc: "Learn block shapes" },
   { href: "/maze", label: "Maze", icon: "🧭", desc: "Loops & logic puzzles" },
   { href: "/sequencing", label: "Sequencing", icon: "🐒", desc: "CodeMonkey style order" },
@@ -46,14 +49,25 @@ export default function Header() {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setOpen(false);
     };
+    const onOpen = () => setOpen(true);
     window.addEventListener("keydown", onKey);
+    window.addEventListener("sudocodo-open-menu", onOpen);
     return () => {
       document.body.style.overflow = "";
       window.removeEventListener("keydown", onKey);
+      window.removeEventListener("sudocodo-open-menu", onOpen);
     };
   }, [open ]);
 
-  const desktopNav = nav.slice(0, 6);
+  const desktopNav = [
+    { href: "/", label: "Games" },
+    { href: "/duels", label: "Duels" },
+    { href: "/ascenso", label: "Ascenso" },
+    { href: "/dailies", label: "Dailies" },
+    { href: "/maze", label: "Maze" },
+    { href: "/sequencing", label: "Sequencing" },
+    { href: "/pond", label: "Pond" },
+  ];
 
   return (
     <>

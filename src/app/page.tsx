@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import GameCard from "@/components/GameCard";
+import HomeHub from "@/components/HomeHub";
 import ResetProgress from "@/components/ResetProgress";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { JsonLd, breadcrumbSchema } from "@/components/JsonLd";
@@ -180,6 +181,9 @@ export default function Home() {
             ))}
           </div>
         </section>
+
+        {/* ARENA HUB — Duels / Ascenso / Dailies previews + Feed anchor */}
+        <HomeHub />
 
         {/* GAME GRID — H2, then H3 per card (no level skipping) */}
         <section className="max-w-6xl mx-auto px-4 mt-8" aria-labelledby="games-heading">
