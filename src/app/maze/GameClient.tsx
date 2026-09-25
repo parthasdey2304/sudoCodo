@@ -45,6 +45,41 @@ const BLOCK_DEFS: Record<string, BlockDef> = {
   if: { id: "if", label: "If path ahead → move", icon: "❓", color: "bg-emerald-50 border-emerald-300 text-emerald-900" },
 };
 
+// Kid-friendly auto-solver: BFS over (x,y,dir) to goal — powers 💡 Hint + ✨ Magic Solve
+function solveMazeLevel(lvl: MazeLevel): string[] {
+  const walls = new Set(lvl.walls.map((w) => `${w.x},${w.y}`));
+  const canStep = (x: number, y: number) =>
+    x >= 0 && y >= 0 && x < lvl.size && y < lvl.size && !walls.has(`${x},${y}`);
+  type State = { x: number; y: number; d: Dir; path: string[] };
+  const start: State = { x: lvl.start.x, y: lvl.start.y, d: lvl.start.dir, path: [] };
+  const seen = new Set<string>([`${start.x},${start.y},${start.d}`]);
+  const q: State[] = [start];
+  while (q.length) {
+    const cur = q.shift()!;
+    if (cur.x === lvl.goal.x && cur.y === lvl.goal.y) return cur.path;
+    if (cur.path.length > 60) continue;
+    // try fwd
+    const nx = cur.x + DIRS[cur.d].dx;
+    const ny = cur.y + DIRS[cur.d].dy;
+    if (canStep(nx, ny)) {
+      const k = `${nx},${ny},${cur.d}`;
+      if (!seen.has(k)) {
+        seen.add(k);
+        q.push({ x: nx, y: ny, d: cur.d, path: [...cur.path, "fwd"] });
+      }
+    }
+    // try turns
+    for (const [act, nd] of [["left", ((cur.d + 3) % 4) as Dir], ["right", ((cur.d + 1) % 4) as Dir]] as const) {
+      const k = `${cur.x},${cur.y},${nd}`;
+      if (!seen.has(k)) {
+        seen.add(k);
+        q.push({ x: cur.x, y: cur.y, d: nd, path: [...cur.path, act] });
+      }
+    }
+  }
+  return [];
+}
+
 export default function MazePage() {
   const [idx, setIdx] = useState(0);
   const lvl = ALL_LEVELS[idx];
@@ -55,7 +90,9 @@ export default function MazePage() {
   const [msg, setMsg] = useState<string | null>(null);
   const [status, setStatus] = useState<"idle" | "win" | "fail">("idle");
   const [step, setStep] = useState(0);
+  const [showHint, setShowHint] = useState(false);
   const ref = useRef<number[]>([]);
+  const solution = useMemo(() => solveMazeLevel(lvl), [lvl]);
 
   useEffect(() => {
     const saved = getLevel("maze", ALL_LEVELS.length);
@@ -69,10 +106,21 @@ export default function MazePage() {
     setMsg(null);
     setStatus("idle");
     setStep(0);
+    setShowHint(false);
     ref.current.forEach((t) => window.clearTimeout(t));
     ref.current = [];
     setRunning(false);
   }, [idx, lvl]);
+
+  const magicSolve = () => {
+    if (running || solution.length === 0) return;
+    setProgram(
+      solution.map((id) => ({ ...BLOCK_DEFS[id], uid: Math.random().toString(36).slice(2, 9) }))
+    );
+    setMsg("✨ Magic filled the answer! Now press ▶ Run to watch it go! You can change it after. 💛");
+    setStatus("idle");
+    setShowHint(false);
+  };
 
   const wallsSet = useMemo(() => new Set(lvl.walls.map((w) => `${w.x},${w.y}`)), [lvl]);
   const palette = useMemo(() => lvl.palette.map((k) => BLOCK_DEFS[k]), [lvl.palette]);
@@ -111,7 +159,7 @@ export default function MazePage() {
       if (i >= expanded.length) {
         if (cur.x === lvl.goal.x && cur.y === lvl.goal.y) {
           setStatus("win");
-          setMsg("🏆 Perfect! You reached the goal!");
+          setMsg("🏆 YAY! You did it! Super star! ⭐ Give yourself a clap! 👏");
           const next = Math.min(idx + 2, ALL_LEVELS.length);
           setLevel("maze", next);
           setGameProgress("maze", { level: next, completed: idx === ALL_LEVELS.length - 1, stars: 3 });
@@ -121,7 +169,7 @@ export default function MazePage() {
           }
         } else {
           setStatus("fail");
-          setMsg("Not yet — the pegman didn’t reach the flag. Try again!");
+          setMsg("🌟 Good try, superstar! Almost there! Tap 💡 Hint if you want help — trying again makes you smarter! 💪");
         }
         setRunning(false);
         return;
@@ -132,7 +180,7 @@ export default function MazePage() {
       else if (act === "right") d = ((d + 1) % 4) as Dir;
       else if (act === "fwd") {
         if (!canMove(cur, d, wallsSet, lvl.size)) {
-          setMsg("💥 Hit a wall! Adjust your turns.");
+          setMsg("🧱 Oopsie! Bumped a wall — no worries! Even robots bump! Try a turn first, or tap 💡 Hint. 💛");
           setStatus("fail");
           setRunning(false);
           return;
@@ -175,11 +223,11 @@ export default function MazePage() {
     <GameShell
       title="Maze"
       icon="🧭"
-      subtitle={`Level ${lvl.id} — ${lvl.title}`}
+      subtitle={`Level ${lvl.id} — ${lvl.title} • Easy & unlimited ♾️`}
       color="from-sky-100 to-indigo-100 border-sky-200"
       controls={
         <>
-          <button onClick={reset} className="px-3 py-1.5 rounded-full bg-white border text-sm font-bold">Reset</button>
+          <button onClick={reset} className="px-3 py-1.5 rounded-full bg-white border text-sm font-bold">🔄 Try Again</button>
           <button
             onClick={run}
             disabled={running || program.length === 0}
@@ -200,12 +248,35 @@ export default function MazePage() {
               {i < idx ? "✓" : l.id}
             </button>
           ))}
-          <span className="ml-2 text-xs font-bold text-slate-500 whitespace-nowrap">Goal: reach the 🚩 — use loops to save blocks</span>
+          <span className="ml-2 text-xs font-bold text-slate-500 whitespace-nowrap">🎯 Goal: reach the 🚩 • ♾️ Use as many blocks as you want!</span>
         </div>
       }
       canvas={
         <div className="p-3 sm:p-4">
-          {msg && <div className={`mb-3 px-3 py-2 rounded-xl text-sm font-bold border ${status === "win" ? "bg-emerald-50 border-emerald-200 text-emerald-800" : status === "fail" ? "bg-red-50 border-red-200 text-red-700" : "bg-slate-50"}`}>{msg}</div>}
+          {/* Kid helpers: Hint + Magic Solve */}
+          <div className="mb-3 flex flex-wrap gap-2">
+            <button
+              onClick={() => setShowHint((v) => !v)}
+              className="px-3 py-1.5 rounded-full bg-amber-100 border border-amber-300 text-amber-900 text-xs font-black hover:bg-amber-200"
+            >
+              💡 {showHint ? "Hide Hint" : "Need a Hint?"}
+            </button>
+            <button
+              onClick={magicSolve}
+              disabled={running || solution.length === 0}
+              className="px-3 py-1.5 rounded-full bg-violet-600 text-white text-xs font-black shadow hover:bg-violet-700 disabled:opacity-40"
+            >
+              ✨ Magic Solve for Me
+            </button>
+            <span className="text-[11px] font-bold text-slate-500 self-center">No worries — asking for help is smart! 🌟</span>
+          </div>
+          {showHint && (
+            <div className="mb-3 px-3 py-2 rounded-xl text-sm font-bold border bg-amber-50 border-amber-200 text-amber-900">
+              💡 Hint: try this order — {solution.slice(0, 8).map((s) => (s === "fwd" ? "⬆️ Forward" : s === "left" ? "↩️ Left" : "↪️ Right")).join(" → ")}
+              {solution.length > 8 ? ` … +${solution.length - 8} more!` : ""} You can add extra blocks — unlimited! ♾️
+            </div>
+          )}
+          {msg && <div className={`mb-3 px-3 py-2 rounded-xl text-sm font-bold border ${status === "win" ? "bg-emerald-50 border-emerald-200 text-emerald-800" : status === "fail" ? "bg-orange-50 border-orange-200 text-orange-800" : "bg-slate-50"}`}>{msg}</div>}
           <div className="grid gap-1 p-2 rounded-2xl bg-gradient-to-br from-slate-50 to-sky-50 border mx-auto" style={{ gridTemplateColumns: `repeat(${lvl.size}, minmax(0,1fr))`, maxWidth: 440 }}>
             {cells.map((c) => {
               const isWall = wallsSet.has(`${c.x},${c.y}`);
@@ -224,11 +295,11 @@ export default function MazePage() {
               );
             })}
           </div>
-          <div className="mt-2 text-center text-xs font-semibold text-slate-500">🧭 Pegman • program length {program.length}/{lvl.maxBlocks} • expanded {(() => {
+          <div className="mt-2 text-center text-xs font-semibold text-slate-500">🧭 Pegman • {program.length} blocks • ♾️ Unlimited workspace • {(() => {
             let ex = 0;
             for (const b of program) ex += b.id === "repeat" ? 4 : 1;
             return ex;
-          })()} steps</div>
+          })()} steps total — more blocks is OK! 🎉</div>
         </div>
       }
       workspace={<BlockWorkspace palette={palette} program={program} setProgram={setProgram} maxBlocks={lvl.maxBlocks} />}

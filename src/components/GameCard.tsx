@@ -19,7 +19,7 @@ export default function GameCard({ href, title, desc, icon, color, accent, level
       <Link
         href={href}
         aria-label={ariaLabel}
-        className="group relative overflow-hidden rounded-[20px] border bg-white p-4 sm:p-5 flex flex-col hover:shadow-xl hover:-translate-y-1 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+        className="group relative overflow-hidden rounded-[20px] border bg-white p-4 sm:p-5 flex flex-col hover:shadow-xl hover:-translate-y-1 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:bg-slate-900 dark:border-slate-700"
       >
         <div className={`absolute inset-0 opacity-[0.06] group-hover:opacity-[0.10] transition ${color}`} aria-hidden="true" />
         <div className="flex items-start justify-between gap-3 relative">
@@ -32,8 +32,8 @@ export default function GameCard({ href, title, desc, icon, color, accent, level
           </div>
           {badge && <span className="text-[10px] font-extrabold tracking-widest px-2 py-1 rounded-full bg-slate-900 text-white">{badge}</span>}
         </div>
-        <h3 className="mt-3 font-extrabold text-slate-900 leading-tight">{title}</h3>
-        <p className="text-xs sm:text-sm text-slate-500 mt-1 line-clamp-2">{desc}</p>
+        <h3 className="mt-3 font-extrabold text-slate-900 dark:text-white leading-tight">{title}</h3>
+        <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">{desc}</p>
         <div className="mt-3 flex items-center gap-2">
           <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-slate-900 text-white group-hover:bg-indigo-600 transition" aria-hidden="true">Play {title} →</span>
           {level && <span className="text-xs font-semibold px-2 py-1 rounded-full bg-slate-100 border">{level}</span>}

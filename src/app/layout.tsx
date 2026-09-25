@@ -87,21 +87,28 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
-  themeColor: "#6366f1",
-  colorScheme: "light",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#6366f1" },
+    { media: "(prefers-color-scheme: dark)", color: "#0f172a" },
+  ],
+  colorScheme: "light dark",
 };
+
+const THEME_SCRIPT = `(function(){try{var t=localStorage.getItem('sudocodo_theme');var d=t?t==='dark':window.matchMedia('(prefers-color-scheme: dark)').matches;if(d)document.documentElement.classList.add('dark');}catch(e){}})();`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         {/* Explicit charset is handled by Next.js but declared for audit completeness */}
         <meta charSet="utf-8" />
         {/* Preconnect for performance (Core Web Vitals) */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+        {/* Theme init — avoids light flash, persisted in localStorage */}
+        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
       </head>
-      <body className="min-h-screen bg-[#f8f9ff] text-slate-800 antialiased selection:bg-indigo-100">
+      <body className="min-h-screen bg-[#f8f9ff] text-slate-800 antialiased selection:bg-indigo-100 dark:bg-slate-950 dark:text-slate-100">
         {/* Structured Data: WebSite + Organization — enables Sitelinks Searchbox */}
         <JsonLd
           data={[
@@ -123,17 +130,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         <div id="main-content">{children}</div>
 
-        <footer className="border-t bg-white/60 backdrop-blur mt-12" role="contentinfo">
+        <footer className="border-t bg-white/60 backdrop-blur mt-12 dark:bg-slate-900/80 dark:border-slate-800" role="contentinfo">
           <div className="max-w-6xl mx-auto px-4 py-8">
             <div className="grid gap-6 md:grid-cols-3 text-sm">
               <div>
-                <h2 className="font-extrabold text-slate-900">SudoCodo</h2>
-                <p className="mt-1 text-slate-600">
+                <h2 className="font-extrabold text-slate-900 dark:text-white">SudoCodo</h2>
+                <p className="mt-1 text-slate-600 dark:text-slate-400">
                   Learn to code with blocks — 8 games, 60+ levels. Inspired by Blockly Games &amp; CodeMonkey Junior. Free, offline, no login.
                 </p>
               </div>
               <nav aria-label="Footer navigation">
-                <h3 className="font-bold text-slate-900">Games</h3>
+                <h3 className="font-bold text-slate-900 dark:text-white">Games</h3>
                 <ul className="mt-2 space-y-1">
                   <li><a href="/puzzle" className="hover:text-indigo-600 underline-offset-4 hover:underline">Puzzle — Learn block shapes</a></li>
                   <li><a href="/maze" className="hover:text-indigo-600 underline-offset-4 hover:underline">Maze — Loops & logic puzzles</a></li>
@@ -144,8 +151,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 </ul>
               </nav>
               <div>
-                <h3 className="font-bold text-slate-900">About</h3>
-                <p className="mt-2 text-slate-600 text-xs leading-relaxed">
+                <h3 className="font-bold text-slate-900 dark:text-white">About</h3>
+                <p className="mt-2 text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
                   © {new Date().getFullYear()} SudoCodo. Inspired by <a className="underline hover:text-indigo-600" href="https://blockly.games" rel="noopener noreferrer" target="_blank">Blockly Games</a> &amp;{" "}
                   <a className="underline hover:text-indigo-600" href="https://app.codemonkey.com/junior/chapters/sequencing/challenges/1" rel="noopener noreferrer" target="_blank">CodeMonkey</a>. Progress saved in{" "}
                   <code className="px-1 py-0.5 rounded bg-slate-100 border text-[11px]">localStorage</code> — no account needed. <a href="/sitemap.xml" className="underline hover:text-indigo-600">Sitemap</a> ·{" "}
