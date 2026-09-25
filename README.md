@@ -66,7 +66,7 @@ src/
     layout.tsx          # Global SEO head, WebSite+Organization JSON-LD, semantic <header>/<main>/<footer>
     page.tsx            # Home — H1, ItemList + BreadcrumbList JSON-LD, semantic sections
     robots.ts           # → /robots.txt (allow /, sitemap)
-    sitemap.ts          # → /sitemap.xml (13 URLs, priority, changeFreq)
+    sitemap.ts          # (removed — static public/sitemap.xml serves /sitemap.xml for Search Console)
     manifest.ts         # → /manifest.webmanifest (PWA, portrait-primary)
     puzzle/page.tsx     # Server metadata + breadcrumb JSON-LD → GameClient (same split for every game)
     maze/page.tsx       # 10-level maze, etc.
