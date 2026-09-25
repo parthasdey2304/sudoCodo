@@ -18,7 +18,9 @@ export function websiteSchema(siteUrl: string, siteName: string, siteTagline: st
     "@id": `${siteUrl}#website`,
     url: siteUrl,
     name: siteName,
-    description: siteTagline,
+    alternateName: ["sudoCodo", "Sudo Codo Games", "sudo codo"],
+    description: "Interactive block coding and mathematical puzzle games.",
+    slogan: siteTagline,
     publisher: { "@id": `${siteUrl}#organization` },
     inLanguage: "en-US",
     potentialAction: {

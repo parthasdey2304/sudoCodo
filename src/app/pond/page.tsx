@@ -36,7 +36,6 @@ export default function PondPage() {
     <>
       <JsonLd data={[breadcrumb, app]} />
       <Breadcrumbs items={[{ name: "Home", href: "/" }, { name: "Pond Battle", href: "/pond", current: true }]} />
-      <div className="sr-only"><h1>Pond Battle Game — Code Your Duck vs AI</h1></div>
       <GameClient />
       <section className="max-w-6xl mx-auto px-4 pb-8" aria-labelledby="pond-seo">
         <h2 id="pond-seo" className="font-black text-slate-900 mt-4">Strategy beats syntax</h2>

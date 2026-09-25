@@ -35,7 +35,6 @@ export default function BirdPage() {
     <>
       <JsonLd data={[breadcrumb, course]} />
       <Breadcrumbs items={[{ name: "Home", href: "/" }, { name: "Bird Coding Game", href: "/bird", current: true }]} />
-      <div className="sr-only"><h1>Bird Coding Game — Conditional Logic Fun</h1></div>
       <GameClient />
       <section className="max-w-6xl mx-auto px-4 pb-8" aria-labelledby="bird-seo">
         <h2 id="bird-seo" className="font-black text-slate-900 mt-4">Learn if/else with Bird</h2>
