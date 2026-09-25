@@ -202,6 +202,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <p className="font-semibold">© {new Date().getFullYear()} SudoCodo — made for kids 💛</p>
               <p className="font-medium">Portrait-first 📱 • Works offline • No login</p>
             </div>
+
+            {/* Giant outlined wordmark */}
+            <div className="mt-6 overflow-hidden" aria-hidden="true">
+              <p className="text-center font-black tracking-tight leading-none text-[19vw] md:text-[9rem] text-transparent [-webkit-text-stroke:2px_rgba(100,116,139,0.55)] dark:[-webkit-text-stroke:2px_rgba(148,163,184,0.45)] select-none">
+                SUDO CODO
+              </p>
+            </div>
           </div>
         </footer>
 
