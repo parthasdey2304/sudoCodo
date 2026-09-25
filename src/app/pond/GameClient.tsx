@@ -99,8 +99,8 @@ export default function PondPage() {
     <GameShell
       title="Pond"
       icon="🦆"
-      subtitle="Code your duck • Battle the AI"
-      color="from-cyan-100 to-sky-100 border-cyan-200"
+      subtitle="Code your duck • Easy & unlimited"
+      color="from-cyan-100 to-sky-100 border-cyan-200 dark:from-cyan-950 dark:to-sky-950 dark:border-cyan-800"
       controls={<button onClick={battle} className="px-5 py-1.5 rounded-full bg-cyan-600 text-white font-black text-sm shadow">⚔️ Battle</button>}
       canvas={
         <div className="p-3">

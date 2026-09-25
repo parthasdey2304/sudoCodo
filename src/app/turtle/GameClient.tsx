@@ -143,8 +143,8 @@ export default function TurtlePage() {
     <GameShell
       title="Turtle"
       icon="🐢"
-      subtitle="Draw with code • Loops & geometry"
-      color="from-teal-100 to-emerald-100 border-teal-200"
+      subtitle="Draw with code • Easy & unlimited"
+      color="from-teal-100 to-emerald-100 border-teal-200 dark:from-teal-950 dark:to-emerald-950 dark:border-teal-800"
       controls={
         <>
           <button onClick={clear} className="px-3 py-1.5 rounded-full bg-white border text-sm font-bold">Clear</button>

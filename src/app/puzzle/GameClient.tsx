@@ -90,7 +90,7 @@ export default function PuzzlePage() {
       setGameProgress("puzzle", { level: next, completed: idx === LEVELS.length - 1, stars: 3 });
       if (idx < LEVELS.length - 1) setTimeout(() => setIdx((v) => v + 1), 1200);
     } else {
-      setMsg("Not quite — check order and shape. Blocks with matching notches snap together.");
+      setMsg("🌟 Good try, superstar! Look at the order — which piece goes first? Tap pieces to move them. You can do it! 💪🧩");
     }
   };
 
@@ -98,23 +98,31 @@ export default function PuzzlePage() {
     <GameShell
       title="Puzzle"
       icon="🧩"
-      subtitle={`Level ${lvl.id} — ${lvl.title}`}
-      color="from-violet-100 to-fuchsia-100 border-violet-200"
-      controls={<button onClick={check} disabled={stack.length === 0} className={`px-5 py-1.5 rounded-full font-black text-sm ${stack.length ? "bg-violet-600 text-white" : "bg-slate-200 text-slate-500"}`}>Check</button>}
+      subtitle={`Level ${lvl.id} — ${lvl.title} • Easy & unlimited ♾️`}
+      color="from-violet-100 to-fuchsia-100 border-violet-200 dark:from-violet-950 dark:to-fuchsia-950 dark:border-violet-800"
+      controls={
+        <>
+          <button onClick={() => setStack(lvl.target.map((id) => lvl.pieces.find((p) => p.id === id)!))} className="px-3 py-1.5 rounded-full bg-amber-100 border border-amber-300 text-amber-900 text-xs font-black hover:bg-amber-200 dark:bg-amber-900 dark:border-amber-700 dark:text-amber-100">
+            ✨ Magic Solve
+          </button>
+          <button onClick={check} disabled={stack.length === 0} className={`px-5 py-1.5 rounded-full font-black text-sm ${stack.length ? "bg-violet-600 text-white" : "bg-slate-200 text-slate-500"}`}>Check ✓</button>
+        </>
+      }
       levelBar={
         <div className="flex gap-1.5">
           {LEVELS.map((_, i) => (
-            <button key={i} onClick={() => setIdx(i)} className={`w-8 h-8 rounded-xl border-2 font-black text-sm grid place-items-center ${i === idx ? "bg-slate-900 text-white" : i < idx ? "bg-violet-600 text-white" : "bg-white"}`}>{i < idx ? "✓" : i + 1}</button>
+            <button key={i} onClick={() => setIdx(i)} className={`w-8 h-8 rounded-xl border-2 font-black text-sm grid place-items-center ${i === idx ? "bg-slate-900 text-white dark:bg-white dark:text-slate-900" : i < idx ? "bg-violet-600 text-white" : "bg-white dark:bg-slate-800 dark:text-slate-100 dark:border-slate-700"}`}>{i < idx ? "✓" : i + 1}</button>
           ))}
+          <span className="ml-2 text-xs font-bold text-slate-500 dark:text-slate-400 self-center whitespace-nowrap">♾️ Unlimited tries • ✨ Magic Solve helps! 🌟</span>
         </div>
       }
       canvas={
         <div className="p-4">
-          {msg && <div className={`mb-3 px-3 py-2 rounded-xl text-sm font-bold border ${ok ? "bg-emerald-50 border-emerald-200 text-emerald-800" : "bg-amber-50 border-amber-200"}`}>{msg}</div>}
+          {msg && <div className={`mb-3 px-3 py-2 rounded-xl text-sm font-bold border ${ok ? "bg-emerald-50 border-emerald-200 text-emerald-800 dark:bg-emerald-950 dark:border-emerald-800 dark:text-emerald-100" : "bg-orange-50 border-orange-200 text-orange-800 dark:bg-orange-950 dark:border-orange-800 dark:text-orange-100"}`}>{msg}</div>}
           <div className="text-center">
-            <div className="text-xs font-extrabold tracking-widest text-slate-500">{lvl.prompt.toUpperCase()}</div>
-            <div className="mt-3 mx-auto max-w-sm rounded-2xl border-2 border-dashed bg-white p-4 min-h-[160px]">
-              <div className="text-xs font-bold text-slate-500">WORKSPACE</div>
+            <div className="text-xs font-extrabold tracking-widest text-slate-500 dark:text-slate-400">{lvl.prompt.toUpperCase()}</div>
+            <div className="mt-3 mx-auto max-w-sm rounded-2xl border-2 border-dashed bg-white p-4 min-h-[160px] dark:bg-slate-800 dark:border-slate-700">
+              <div className="text-xs font-bold text-slate-500 dark:text-slate-400">WORKSPACE • ♾️ UNLIMITED TRIES 🌟</div>
               <div className="mt-3 flex flex-col gap-2">
                 {stack.length === 0 ? <div className="py-6 text-sm font-semibold text-slate-400">Tap pieces below to snap them here</div> : stack.map((p) => (
                   <button key={p.id} onClick={() => remove(p)} className={`w-full text-left px-4 py-3 rounded-xl border-2 text-white font-black flex items-center justify-between ${p.color} shadow`}>
@@ -137,12 +145,12 @@ export default function PuzzlePage() {
         </div>
       }
       workspace={
-        <div className="rounded-2xl bg-white border p-3">
-          <div className="text-xs font-black tracking-widest text-slate-500">LEARN</div>
-          <p className="mt-1 text-sm font-medium text-slate-600">Blockly blocks have <b>notches & plugs</b>. Only matching shapes connect. This teaches how code fits together without syntax errors — just like LEGO.</p>
-          <div className="mt-3 rounded-xl bg-violet-50 border border-violet-200 p-3 flex gap-3">
-            <div className="w-10 h-10 rounded-xl bg-violet-600 grid place-items-center text-white">💡</div>
-            <div className="text-sm"><b>Tip</b>: On phones, tap pieces — no drag needed. Try level 4 for loops!</div>
+        <div className="rounded-2xl bg-white border p-3 dark:bg-slate-900 dark:border-slate-700">
+          <div className="text-xs font-black tracking-widest text-slate-500 dark:text-slate-400">LEARN — SUPER EASY! 🌟</div>
+          <p className="mt-1 text-sm font-medium text-slate-600 dark:text-slate-300">Blocks snap like LEGO! 🧩 Tap pieces — no drag needed. Stuck? Tap ✨ Magic Solve, then try yourself! Unlimited tries! ♾️💛</p>
+          <div className="mt-3 rounded-xl bg-violet-50 border border-violet-200 p-3 flex gap-3 dark:bg-violet-950 dark:border-violet-800">
+            <div className="w-10 h-10 rounded-xl bg-violet-600 grid place-items-center text-white shrink-0">💡</div>
+            <div className="text-sm dark:text-slate-200"><b>Tip</b>: On phones, tap pieces — trying again makes you smarter! Try level 4 for loops!</div>
           </div>
         </div>
       }
