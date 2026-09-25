@@ -629,33 +629,76 @@ export default function MonkeyCodeClient() {
                 )}
               </div>
             </div>
-            {program.length === 0 ? (
-              <p className="mt-3 text-center text-sm font-semibold text-slate-400">👆 Tap blocks below to fill your code — top runs first!</p>
-            ) : (
-              <ol className="mt-2 flex flex-wrap gap-1.5" aria-label="Your command sequence">
-                {program.map((b, i) => {
-                  const def = PALETTE.find((p) => p.id === b.id)!;
-                  const isActive = b.uid === activeBi;
-                  const isFail = b.uid === failBi;
-                  return (
-                    <li key={b.uid}>
-                      <button
-                        onClick={() => !running && setProgram((p) => p.filter((x) => x.uid !== b.uid))}
-                        disabled={running}
-                        title={running ? def.label : `${def.label} — tap to remove`}
-                        aria-label={`Step ${i + 1}: ${def.label}${isActive ? " (running now)" : ""}${isFail ? " (failed here)" : ""}`}
-                        className={`flex items-center gap-1 px-2.5 py-1.5 rounded-xl border-2 font-black text-xs shadow-sm transition ${def.color} ${
-                          isActive ? "ring-4 ring-yellow-300 scale-110 -rotate-2" : ""
-                        } ${isFail ? "ring-4 ring-red-400 border-red-500 animate-pulse" : ""}`}
-                      >
-                        <span className="text-[10px] opacity-70">{i + 1}</span>
-                        <span>{def.icon}</span>
-                      </button>
-                    </li>
-                  );
-                })}
-              </ol>
-            )}
+            {(() => {
+              const isRep = (id: string) => id === "r2" || id === "r3" || id === "r4";
+              const stuck = new Set<number>();
+              program.forEach((b, i) => {
+                if (isRep(b.id) && !program.slice(0, i).some((p) => !isRep(p.id))) stuck.add(i);
+              });
+              const nudge = (i: number, dir: -1 | 1) => {
+                const j = i + dir;
+                if (running || j < 0 || j >= program.length) return;
+                setProgram((p) => {
+                  const arr = [...p];
+                  const [m] = arr.splice(i, 1);
+                  arr.splice(j, 0, m);
+                  return arr;
+                });
+              };
+              return (
+                <>
+                  {stuck.size > 0 && (
+                    <p className="mt-2 text-xs font-bold text-amber-800 bg-amber-100 border border-amber-300 rounded-xl px-3 py-2 dark:bg-amber-950 dark:border-amber-700 dark:text-amber-200">
+                      ⚠️ A 🔁 Repeat has no move above it! Tap <b>▶</b> to slide it right under a move, or tap the chip to remove it. 💛
+                    </p>
+                  )}
+                  {program.length === 0 ? (
+                    <p className="mt-3 text-center text-sm font-semibold text-slate-400">👆 Tap blocks below to fill your code — top runs first! 🔁 Repeat copies the block to its left!</p>
+                  ) : (
+                    <ol className="mt-2 flex flex-wrap gap-1.5" aria-label="Your command sequence">
+                      {program.map((b, i) => {
+                        const def = PALETTE.find((p) => p.id === b.id)!;
+                        const isActive = b.uid === activeBi;
+                        const isFail = b.uid === failBi;
+                        const isStuck = stuck.has(i);
+                        return (
+                          <li key={b.uid} className="flex items-center">
+                            <button
+                              onClick={() => nudge(i, -1)}
+                              disabled={running || i === 0}
+                              aria-label={`Move ${def.label} earlier`}
+                              className="px-1 py-1.5 rounded-l-xl bg-black/15 text-white text-[10px] font-black disabled:opacity-30"
+                            >
+                              ◀
+                            </button>
+                            <button
+                              onClick={() => !running && setProgram((p) => p.filter((x) => x.uid !== b.uid))}
+                              disabled={running}
+                              title={running ? def.label : `${def.label} — tap to remove`}
+                              aria-label={`Step ${i + 1}: ${def.label}${isActive ? " (running now)" : ""}${isFail ? " (failed here)" : ""}${isStuck ? " (needs a move to its left)" : ""}`}
+                              className={`flex items-center gap-1 px-2 py-1.5 border-2 font-black text-xs shadow-sm transition ${def.color} ${
+                                isActive ? "ring-4 ring-yellow-300 scale-110 -rotate-2" : ""
+                              } ${isFail || isStuck ? "ring-4 ring-red-400 border-red-500 animate-pulse" : ""}`}
+                            >
+                              <span className="text-[10px] opacity-70">{i + 1}</span>
+                              <span>{isStuck ? "⚠️" : def.icon}</span>
+                            </button>
+                            <button
+                              onClick={() => nudge(i, 1)}
+                              disabled={running || i === program.length - 1}
+                              aria-label={`Move ${def.label} later`}
+                              className="px-1 py-1.5 rounded-r-xl bg-black/15 text-white text-[10px] font-black disabled:opacity-30"
+                            >
+                              ▶
+                            </button>
+                          </li>
+                        );
+                      })}
+                    </ol>
+                  )}
+                </>
+              );
+            })()}
             <button
               onClick={run}
               disabled={running || program.length === 0}

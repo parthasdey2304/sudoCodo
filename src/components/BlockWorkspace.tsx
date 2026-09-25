@@ -19,6 +19,10 @@ const SCRATCH_BASE =
 const SCRATCH_NUB =
   "after:content-[''] after:absolute after:-bottom-[11px] after:left-7 after:w-12 after:h-[11px] after:rounded-b-lg after:bg-inherit after:pointer-events-none";
 
+// Repeat-family blocks copy the action block directly above them.
+// If none exists above, the block is "stuck" — Run will stop there.
+const isRepeatBlock = (id: string) => /^(r\d+|repeat\d*)$/i.test(id) || id.toLowerCase().includes("repeat");
+
 export default function BlockWorkspace({
   palette,
   program,
@@ -42,11 +46,20 @@ export default function BlockWorkspace({
   const removeAt = (uid: string) => setProgram(program.filter((p) => p.uid !== uid));
 
   const move = (from: number, to: number) => {
+    if (to < 0 || to >= program.length) return;
     const arr = [...program];
     const [m] = arr.splice(from, 1);
     arr.splice(to, 0, m);
     setProgram(arr);
   };
+
+  const shift = (i: number, dir: -1 | 1) => move(i, i + dir);
+
+  // Repeat blocks with no action block above them are stuck — flag them inline.
+  const stuckIdx = new Set<number>();
+  program.forEach((b, i) => {
+    if (isRepeatBlock(b.id) && !program.slice(0, i).some((p) => !isRepeatBlock(p.id))) stuckIdx.add(i);
+  });
 
   return (
     <div className="grid gap-3">
@@ -68,7 +81,7 @@ export default function BlockWorkspace({
             </button>
           ))}
         </div>
-        <p className="mt-2 text-[11px] text-slate-500 dark:text-slate-400">👆 Tap to add • nub fits into the notch, just like Scratch! 🧩</p>
+        <p className="mt-2 text-[11px] text-slate-500 dark:text-slate-400">👆 Tap to add • nub fits into the notch, just like Scratch! 🧩 🔁 Repeat copies the block above it.</p>
       </div>
 
       {/* PROGRAM */}
@@ -112,6 +125,12 @@ export default function BlockWorkspace({
           </p>
         )}
 
+        {stuckIdx.size > 0 && (
+          <p className="mt-2 text-xs font-bold text-amber-800 bg-amber-100 border border-amber-300 rounded-xl px-3 py-2 dark:bg-amber-950 dark:border-amber-700 dark:text-amber-200">
+            ⚠️ A 🔁 Repeat has no move above it! Tap <b>↓</b> to slide it under a move, or <b>×</b> to remove it. 💛
+          </p>
+        )}
+
         {program.length === 0 ? (
           <div className="mt-6 text-center">
             <div className="mx-auto w-10 h-10 rounded-xl bg-white border grid place-items-center text-slate-400 dark:bg-slate-800 dark:border-slate-700">＋</div>
@@ -120,7 +139,9 @@ export default function BlockWorkspace({
           </div>
         ) : (
           <div className="mt-3 flex flex-col">
-            {program.map((b, i) => (
+            {program.map((b, i) => {
+              const stuck = stuckIdx.has(i);
+              return (
               <div
                 key={b.uid}
                 draggable
@@ -134,13 +155,21 @@ export default function BlockWorkspace({
                   if (!isNaN(from)) move(from, i);
                 }}
                 style={{ zIndex: program.length - i }}
-                className={`group flex items-center gap-2 pl-3 pr-2 pt-4 pb-3 mb-[-3px] last:mb-0 font-bold text-sm ${SCRATCH_BASE} ${SCRATCH_NUB} ${b.color}`}
+                className={`group flex items-center gap-1.5 pl-3 pr-2 pt-4 pb-3 mb-[-3px] last:mb-0 font-bold text-sm ${SCRATCH_BASE} ${SCRATCH_NUB} ${b.color} ${stuck ? "ring-4 ring-amber-300" : ""}`}
               >
-                <span className="w-6 h-6 rounded-md bg-black/25 text-white grid place-items-center text-xs font-black border border-white/30">{i + 1}</span>
-                <span className="flex-1">{b.icon} {b.label}</span>
-                <button onClick={() => removeAt(b.uid)} aria-label="Remove block" className="w-7 h-7 rounded-full bg-white/90 border border-black/10 grid place-items-center text-slate-600 font-black hover:text-red-600">×</button>
+                <span className="w-6 h-6 rounded-md bg-black/25 text-white grid place-items-center text-xs font-black border border-white/30 shrink-0">{i + 1}</span>
+                <span className="flex-1 min-w-0">
+                  {stuck && <span aria-hidden="true">⚠️ </span>}{b.icon} {b.label}
+                  {stuck && <span className="block text-[10px] font-black opacity-90">needs a move above!</span>}
+                </span>
+                <span className="flex flex-col gap-0.5 shrink-0" role="group" aria-label={`Reorder step ${i + 1}`}>
+                  <button onClick={() => shift(i, -1)} disabled={i === 0} aria-label={`Move ${b.label} up`} className="w-6 h-5 rounded-md bg-black/20 text-white text-[10px] font-black leading-none grid place-items-center disabled:opacity-30 hover:bg-black/35">▲</button>
+                  <button onClick={() => shift(i, 1)} disabled={i === program.length - 1} aria-label={`Move ${b.label} down`} className="w-6 h-5 rounded-md bg-black/20 text-white text-[10px] font-black leading-none grid place-items-center disabled:opacity-30 hover:bg-black/35">▼</button>
+                </span>
+                <button onClick={() => removeAt(b.uid)} aria-label={`Remove ${b.label}`} className="w-7 h-7 rounded-full bg-white/90 border border-black/10 grid place-items-center text-slate-600 font-black hover:text-red-600 shrink-0">×</button>
               </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>
