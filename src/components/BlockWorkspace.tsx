@@ -1,0 +1,116 @@
+"use client";
+import { useState } from "react";
+
+export type BlockDef = {
+  id: string;
+  label: string;
+  color: string;
+  icon?: string;
+  desc?: string;
+};
+
+export type DroppedBlock = BlockDef & { uid: string };
+
+export default function BlockWorkspace({
+  palette,
+  program,
+  setProgram,
+  maxBlocks,
+}: {
+  palette: BlockDef[];
+  program: DroppedBlock[];
+  setProgram: (p: DroppedBlock[]) => void;
+  maxBlocks?: number;
+}) {
+  const [drag, setDrag] = useState<BlockDef | null>(null);
+
+  const addBlock = (b: BlockDef) => {
+    if (maxBlocks && program.length >= maxBlocks) return;
+    setProgram([...program, { ...b, uid: Math.random().toString(36).slice(2, 9) }]);
+  };
+
+  const removeAt = (uid: string) => setProgram(program.filter((p) => p.uid !== uid));
+
+  const move = (from: number, to: number) => {
+    const arr = [...program];
+    const [m] = arr.splice(from, 1);
+    arr.splice(to, 0, m);
+    setProgram(arr);
+  };
+
+  return (
+    <div className="grid gap-3">
+      {/* PALETTE */}
+      <div className="rounded-2xl bg-white border p-3">
+        <div className="text-[11px] font-extrabold tracking-widest text-slate-500">TOOLBOX</div>
+        <div className="mt-2 grid grid-cols-2 sm:grid-cols-3 gap-2">
+          {palette.map((b) => (
+            <button
+              key={b.id}
+              draggable
+              onDragStart={() => setDrag(b)}
+              onDragEnd={() => setDrag(null)}
+              onClick={() => addBlock(b)}
+              className={`text-left px-3 py-2.5 rounded-xl border-2 font-bold text-sm flex items-center gap-2 active:scale-[0.98] transition ${b.color}`}
+            >
+              <span className="text-base">{b.icon || "◆"}</span>
+              <span className="leading-tight">{b.label}</span>
+            </button>
+          ))}
+        </div>
+        <p className="mt-2 text-[11px] text-slate-500">Tap to add • drag to reorder • long-press on mobile to drag</p>
+      </div>
+
+      {/* PROGRAM */}
+      <div
+        className={`rounded-2xl border-2 border-dashed bg-[#fbfcff] p-3 min-h-[110px] ${drag ? "border-indigo-300 bg-indigo-50/50" : "border-slate-200"}`}
+        onDragOver={(e) => e.preventDefault()}
+        onDrop={(e) => {
+          e.preventDefault();
+          if (drag) addBlock(drag);
+          setDrag(null);
+        }}
+      >
+        <div className="flex items-center justify-between">
+          <div className="text-[11px] font-extrabold tracking-widest text-slate-500">WORKSPACE • {program.length}{maxBlocks ? ` / ${maxBlocks}` : ""}</div>
+          {program.length > 0 && (
+            <button onClick={() => setProgram([])} className="text-xs font-bold px-2 py-1 rounded-full bg-white border hover:bg-red-50 hover:text-red-600">
+              Clear
+            </button>
+          )}
+        </div>
+
+        {program.length === 0 ? (
+          <div className="mt-6 text-center">
+            <div className="mx-auto w-10 h-10 rounded-xl bg-white border grid place-items-center text-slate-400">＋</div>
+            <p className="mt-2 text-sm font-semibold text-slate-400">Drag blocks here</p>
+            <p className="text-xs text-slate-400">Build your program in order — top to bottom runs first</p>
+          </div>
+        ) : (
+          <div className="mt-3 flex flex-col gap-2">
+            {program.map((b, i) => (
+              <div
+                key={b.uid}
+                draggable
+                onDragStart={(e) => {
+                  e.dataTransfer.setData("text/plain", String(i));
+                }}
+                onDragOver={(e) => e.preventDefault()}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  const from = Number(e.dataTransfer.getData("text/plain"));
+                  if (!isNaN(from)) move(from, i);
+                }}
+                className={`group flex items-center gap-2 px-3 py-2.5 rounded-xl border-2 font-bold text-sm shadow-sm ${b.color}`}
+              >
+                <span className="w-6 h-6 rounded-lg bg-white/80 grid place-items-center text-xs border">{i + 1}</span>
+                <span className="flex-1">{b.icon} {b.label}</span>
+                <button onClick={() => removeAt(b.uid)} className="w-7 h-7 rounded-full bg-white border grid place-items-center text-slate-500 hover:text-red-600">×</button>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
