@@ -1,0 +1,10 @@
+{
+  "name": "SudoCodo",
+  "short_name": "SudoCodo",
+  "description": "Learn to code with blocks — Blockly Games + CodeMonkey inspired, phone-first.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f8f9ff",
+  "theme_color": "#6366f1",
+  "icons": []
+}
