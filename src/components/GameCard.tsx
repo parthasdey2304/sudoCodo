@@ -30,13 +30,13 @@ export default function GameCard({ href, title, desc, icon, color, accent, level
           >
             {icon}
           </div>
-          {badge && <span className="text-[10px] font-extrabold tracking-widest px-2 py-1 rounded-full bg-slate-900 text-white">{badge}</span>}
+          {badge && <span className="text-[10px] font-extrabold tracking-widest px-2 py-1 rounded-full bg-slate-900 text-white dark:bg-white dark:text-slate-900">{badge}</span>}
         </div>
         <h3 className="mt-3 font-extrabold text-slate-900 dark:text-white leading-tight">{title}</h3>
         <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">{desc}</p>
         <div className="mt-3 flex items-center gap-2">
-          <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-slate-900 text-white group-hover:bg-indigo-600 transition" aria-hidden="true">Play {title} →</span>
-          {level && <span className="text-xs font-semibold px-2 py-1 rounded-full bg-slate-100 border">{level}</span>}
+          <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-slate-900 text-white group-hover:bg-indigo-600 transition dark:bg-indigo-500 dark:group-hover:bg-indigo-400" aria-hidden="true">Play {title} →</span>
+          {level && <span className="text-xs font-semibold px-2 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-700 dark:bg-slate-800 dark:border-slate-600 dark:text-slate-100">{level}</span>}
         </div>
       </Link>
     </article>
