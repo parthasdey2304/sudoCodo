@@ -30,14 +30,14 @@ export default function GameShell({
             {icon}
           </div>
           <div>
-            <h1 id="game-title" className="font-black leading-none text-slate-900 text-xl sm:text-2xl">
+            <h1 id="game-title" className="font-black leading-none text-slate-900 dark:text-white text-xl sm:text-2xl">
               {title}
             </h1>
-            <p className="text-xs sm:text-sm text-slate-600 font-medium">{subtitle}</p>
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 font-medium">{subtitle}</p>
           </div>
         </div>
         <nav aria-label="Game actions" className="flex items-center gap-2">
-          <Link href="/" className="px-3 py-1.5 rounded-full bg-white border text-sm font-bold hover:bg-slate-50" aria-label="Back to all games">
+          <Link href="/" className="px-3 py-1.5 rounded-full bg-white border text-sm font-bold hover:bg-slate-50 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-100" aria-label="Back to all games">
             ← All Games
           </Link>
           {controls}
@@ -48,8 +48,8 @@ export default function GameShell({
 
       {/* portrait stack on mobile, side-by-side on desktop — avoids CLS with stable aspect */}
       <div className="mt-4 grid gap-4 lg:grid-cols-[1.15fr_0.85fr] items-start">
-        <section aria-label={`${title} game canvas`} className="order-1 lg:order-1 rounded-[20px] border bg-white p-3 sm:p-4 shadow-sm">
-          <div className="rounded-2xl overflow-hidden border bg-slate-50">{canvas}</div>
+        <section aria-label={`${title} game canvas`} className="order-1 lg:order-1 rounded-[20px] border bg-white p-3 sm:p-4 shadow-sm dark:bg-slate-900 dark:border-slate-700">
+          <div className="rounded-2xl overflow-hidden border bg-slate-50 dark:bg-slate-800 dark:border-slate-700">{canvas}</div>
         </section>
         <aside aria-label={`${title} workspace and toolbox`} className="order-2 lg:order-2 lg:sticky lg:top-[68px]">
           {workspace}

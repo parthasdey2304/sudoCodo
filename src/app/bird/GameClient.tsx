@@ -27,6 +27,52 @@ const PALETTE: BlockDef[] = [
   { id: "repeat", label: "Repeat 3×", icon: "🔁", color: "bg-violet-50 border-violet-300" },
 ];
 
+type BirdLevel = { size: number; bird: Pos; worm: Pos; worm2?: Pos; walls: Pos[] };
+
+// Kid-friendly solver: BFS collecting all worms — powers Hint + Magic Solve
+function solveBirdLevel(lvl: BirdLevel): string[] {
+  const walls = new Set(lvl.walls.map((w) => `${w.x},${w.y}`));
+  const worms = [lvl.worm, lvl.worm2].filter(Boolean) as Pos[];
+  const wIdx = new Map(worms.map((w, i) => [`${w.x},${w.y}`, i]));
+  const full = (1 << worms.length) - 1;
+  let sm = 0;
+  if (wIdx.has(`${lvl.bird.x},${lvl.bird.y}`)) sm |= 1 << wIdx.get(`${lvl.bird.x},${lvl.bird.y}`)!;
+  const moves = [
+    ["up", 0, -1],
+    ["down", 0, 1],
+    ["left", -1, 0],
+    ["right", 1, 0],
+  ] as const;
+  type S = { x: number; y: number; m: number; path: string[] };
+  const seen = new Set([`${lvl.bird.x},${lvl.bird.y},${sm}`]);
+  const q: S[] = [{ x: lvl.bird.x, y: lvl.bird.y, m: sm, path: [] }];
+  while (q.length) {
+    const cur = q.shift()!;
+    if (cur.m === full) return cur.path;
+    if (cur.path.length > 40) continue;
+    for (const [act, dx, dy] of moves) {
+      const nx = cur.x + dx;
+      const ny = cur.y + dy;
+      if (nx < 0 || ny < 0 || nx >= lvl.size || ny >= lvl.size) continue;
+      if (walls.has(`${nx},${ny}`)) continue;
+      let nm = cur.m;
+      if (wIdx.has(`${nx},${ny}`)) nm |= 1 << wIdx.get(`${nx},${ny}`)!;
+      const k = `${nx},${ny},${nm}`;
+      if (seen.has(k)) continue;
+      seen.add(k);
+      q.push({ x: nx, y: ny, m: nm, path: [...cur.path, act] });
+    }
+  }
+  return [];
+}
+
+const BIRD_LOOKUP: Record<string, BlockDef> = {
+  up: { id: "up", label: "Fly Up", icon: "⬆️", color: "bg-sky-50 border-sky-300" },
+  down: { id: "down", label: "Fly Down", icon: "⬇️", color: "bg-sky-50 border-sky-300" },
+  left: { id: "left", label: "Fly Left", icon: "⬅️", color: "bg-amber-50 border-amber-300" },
+  right: { id: "right", label: "Fly Right", icon: "➡️", color: "bg-amber-50 border-amber-300" },
+};
+
 export default function BirdPage() {
   const [idx, setIdx] = useState(0);
   const lvl = LEVELS[idx];
@@ -36,7 +82,9 @@ export default function BirdPage() {
   const [running, setRunning] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
   const [status, setStatus] = useState<"idle" | "win" | "fail">("idle");
+  const [showHint, setShowHint] = useState(false);
   const timers = useRef<number[]>([]);
+  const solution = useMemo(() => solveBirdLevel(lvl), [lvl]);
 
   useEffect(() => {
     const s = getLevel("bird", LEVELS.length);
@@ -48,10 +96,28 @@ export default function BirdPage() {
     setProgram([]);
     setMsg(null);
     setStatus("idle");
+    setShowHint(false);
     timers.current.forEach((t) => window.clearTimeout(t));
     timers.current = [];
     setRunning(false);
   }, [idx, lvl]);
+
+  const magicSolve = () => {
+    if (running || solution.length === 0) return;
+    setProgram(solution.map((id) => ({ ...BIRD_LOOKUP[id], uid: Math.random().toString(36).slice(2, 9) })));
+    setMsg("✨ Magic filled the flight! Press ▶ Fly to watch birdie eat! 🐦🪱");
+    setStatus("idle");
+    setShowHint(false);
+  };
+
+  const resetAll = () => {
+    timers.current.forEach((t) => window.clearTimeout(t));
+    setRunning(false);
+    setBird(lvl.bird);
+    setWorms([lvl.worm, (lvl as any).worm2].filter(Boolean) as Pos[]);
+    setMsg(null);
+    setStatus("idle");
+  };
 
   const wallSet = useMemo(() => new Set(lvl.walls.map((w) => `${w.x},${w.y}`)), [lvl]);
 
@@ -77,14 +143,14 @@ export default function BirdPage() {
     const step = (i: number) => {
       if (i >= expanded.length) {
         if (ws.length === 0) {
-          setMsg("🎉 Bird fed! All worms eaten!");
+          setMsg("🎉 YUMMY! Birdie ate all the worms! You are amazing! 🐦💛⭐");
           setStatus("win");
           const nxt = Math.min(idx + 2, LEVELS.length);
           setLevel("bird", nxt);
           setGameProgress("bird", { level: nxt, completed: idx === LEVELS.length - 1, stars: 3 });
           if (idx < LEVELS.length - 1) timers.current.push(window.setTimeout(() => setIdx((v) => v + 1), 1300));
         } else {
-          setMsg("Almost — worm still there! Adjust your flight path.");
+          setMsg("🌟 Nice flying! Worm is still hungry-waiting! Tap 💡 Hint — you are doing great! 💪🪱");
           setStatus("fail");
         }
         setRunning(false);
@@ -109,7 +175,7 @@ export default function BirdPage() {
       if (a !== "ifworm" || (a === "ifworm" && isWormAhead(cur))) {
         const inBounds = nx >= 0 && ny >= 0 && nx < lvl.size && ny < lvl.size;
         if (!inBounds || wallSet.has(`${nx},${ny}`)) {
-          setMsg("💥 Hit a branch! Stay in bounds.");
+          setMsg("🌳 Oopsie — bumped a tree! No worries, birdies bump too! Try another way or tap 💡 Hint. 💛");
           setStatus("fail");
           setRunning(false);
           return;
@@ -134,11 +200,11 @@ export default function BirdPage() {
     <GameShell
       title="Bird"
       icon="🐦"
-      subtitle={`Level ${lvl.id} — ${lvl.title} • Conditional logic`}
-      color="from-emerald-100 to-teal-100 border-emerald-200"
+      subtitle={`Level ${lvl.id} — ${lvl.title} • Easy & unlimited ♾️`}
+      color="from-emerald-100 to-teal-100 border-emerald-200 dark:from-emerald-950 dark:to-teal-950 dark:border-emerald-800"
       controls={
         <>
-          <button onClick={() => { timers.current.forEach((t) => window.clearTimeout(t)); setRunning(false); setBird(lvl.bird); setWorms([lvl.worm, (lvl as any).worm2].filter(Boolean) as Pos[]); setMsg(null); setStatus("idle"); }} className="px-3 py-1.5 rounded-full bg-white border text-sm font-bold">Reset</button>
+          <button onClick={resetAll} className="px-3 py-1.5 rounded-full bg-white border text-sm font-bold dark:bg-slate-800 dark:border-slate-700 dark:text-slate-100">🔄 Try Again</button>
           <button onClick={run} disabled={running || program.length === 0} className={`px-5 py-1.5 rounded-full font-black text-sm shadow ${running ? "bg-slate-200" : "bg-emerald-600 text-white"}`}>{running ? "Flying…" : "▶ Fly"}</button>
         </>
       }
@@ -151,7 +217,22 @@ export default function BirdPage() {
       }
       canvas={
         <div className="p-3 sm:p-4">
-          {msg && <div className={`mb-3 px-3 py-2 rounded-xl text-sm font-bold border ${status === "win" ? "bg-emerald-50 border-emerald-200" : status === "fail" ? "bg-red-50 border-red-200 text-red-700" : "bg-slate-50"}`}>{msg}</div>}
+          <div className="mb-3 flex flex-wrap gap-2">
+            <button onClick={() => setShowHint((v) => !v)} className="px-3 py-1.5 rounded-full bg-amber-100 border border-amber-300 text-amber-900 text-xs font-black hover:bg-amber-200 dark:bg-amber-900 dark:border-amber-700 dark:text-amber-100">
+              💡 {showHint ? "Hide Hint" : "Need a Hint?"}
+            </button>
+            <button onClick={magicSolve} disabled={running || solution.length === 0} className="px-3 py-1.5 rounded-full bg-violet-600 text-white text-xs font-black shadow hover:bg-violet-700 disabled:opacity-40">
+              ✨ Magic Solve for Me
+            </button>
+            <span className="text-[11px] font-bold text-slate-500 dark:text-slate-400 self-center">♾️ Unlimited blocks — more is OK! 🌟</span>
+          </div>
+          {showHint && (
+            <div className="mb-3 px-3 py-2 rounded-xl text-sm font-bold border bg-amber-50 border-amber-200 text-amber-900 dark:bg-amber-950 dark:border-amber-800 dark:text-amber-100">
+              💡 Hint: fly — {solution.slice(0, 8).map((s) => (s === "up" ? "⬆️ Up" : s === "down" ? "⬇️ Down" : s === "left" ? "⬅️ Left" : "➡️ Right")).join(" → ")}
+              {solution.length > 8 ? ` … +${solution.length - 8} more!` : ""}
+            </div>
+          )}
+          {msg && <div className={`mb-3 px-3 py-2 rounded-xl text-sm font-bold border ${status === "win" ? "bg-emerald-50 border-emerald-200 dark:bg-emerald-950 dark:border-emerald-800 dark:text-emerald-100" : status === "fail" ? "bg-orange-50 border-orange-200 text-orange-800 dark:bg-orange-950 dark:border-orange-800 dark:text-orange-100" : "bg-slate-50 dark:bg-slate-800"}`}>{msg}</div>}
           <div className="grid gap-1 p-2 rounded-2xl bg-gradient-to-br from-sky-50 to-emerald-50 border mx-auto" style={{ gridTemplateColumns: `repeat(${lvl.size}, minmax(0,1fr))`, maxWidth: 420 }}>
             {cells.map((c) => {
               const isWall = wallSet.has(`${c.x},${c.y}`);
@@ -166,7 +247,15 @@ export default function BirdPage() {
           </div>
         </div>
       }
-      workspace={<BlockWorkspace palette={PALETTE} program={program} setProgram={setProgram} maxBlocks={lvl.max} />}
+      workspace={
+        <div className="space-y-3">
+          <BlockWorkspace palette={PALETTE} program={program} setProgram={setProgram} maxBlocks={lvl.max} />
+          <div className="rounded-2xl bg-white border p-3 dark:bg-slate-900 dark:border-slate-700">
+            <div className="text-xs font-black tracking-widest text-slate-500 dark:text-slate-400">EASY FLYING TIPS 🐦</div>
+            <p className="mt-1 text-sm font-medium text-slate-600 dark:text-slate-300">👆 Tap arrows to fly — use as many as you want! ♾️ Bumped a tree? Just tap 🔄 Try Again — birdies never give up! 💛</p>
+          </div>
+        </div>
+      }
     />
   );
 }

@@ -117,6 +117,52 @@ const PALETTE: BlockDef[] = [
   { id: "r3", label: "Repeat 3×", icon: "🔂", color: "bg-violet-50 border-violet-300 text-violet-900" },
 ];
 
+// Kid-friendly solver: BFS collecting all bananas — powers Hint + Magic Solve
+function solveSequencingLevel(lvl: Level): string[] {
+  const walls = new Set(lvl.walls.map((w) => `${w.x},${w.y}`));
+  const canStep = (x: number, y: number) =>
+    x >= 0 && y >= 0 && x < lvl.size && y < lvl.size && !walls.has(`${x},${y}`);
+  const bananaIdx = new Map(lvl.bananas.map((b, i) => [`${b.x},${b.y}`, i]));
+  type S = { x: number; y: number; d: Dir; mask: number; path: string[] };
+  let startMask = 0;
+  const sk = `${lvl.start.x},${lvl.start.y}`;
+  if (bananaIdx.has(sk)) startMask |= 1 << bananaIdx.get(sk)!;
+  const full = (1 << lvl.bananas.length) - 1;
+  const seen = new Set<string>([`${lvl.start.x},${lvl.start.y},${lvl.start.dir},${startMask}`]);
+  const q: S[] = [{ x: lvl.start.x, y: lvl.start.y, d: lvl.start.dir, mask: startMask, path: [] }];
+  while (q.length) {
+    const cur = q.shift()!;
+    if (cur.mask === full) return cur.path;
+    if (cur.path.length > 50) continue;
+    const nx = cur.x + DIRS[cur.d].dx;
+    const ny = cur.y + DIRS[cur.d].dy;
+    if (canStep(nx, ny)) {
+      let nm = cur.mask;
+      const bk = `${nx},${ny}`;
+      if (bananaIdx.has(bk)) nm |= 1 << bananaIdx.get(bk)!;
+      const k = `${nx},${ny},${cur.d},${nm}`;
+      if (!seen.has(k)) {
+        seen.add(k);
+        q.push({ x: nx, y: ny, d: cur.d, mask: nm, path: [...cur.path, "fwd"] });
+      }
+    }
+    for (const [act, nd] of [["left", ((cur.d + 3) % 4) as Dir], ["right", ((cur.d + 1) % 4) as Dir]] as const) {
+      const k = `${cur.x},${cur.y},${nd},${cur.mask}`;
+      if (!seen.has(k)) {
+        seen.add(k);
+        q.push({ x: cur.x, y: cur.y, d: nd, mask: cur.mask, path: [...cur.path, act] });
+      }
+    }
+  }
+  return [];
+}
+
+const BLOCK_LOOKUP: Record<string, BlockDef> = {
+  fwd: { id: "fwd", label: "Move Forward", icon: "⬆️", color: "bg-sky-50 border-sky-300 text-sky-900" },
+  left: { id: "left", label: "Turn Left", icon: "↩️", color: "bg-amber-50 border-amber-300 text-amber-900" },
+  right: { id: "right", label: "Turn Right", icon: "↪️", color: "bg-amber-50 border-amber-300 text-amber-900" },
+};
+
 export default function SequencingPage() {
   const [levelIdx, setLevelIdx] = useState(0);
   const lvl = LEVELS[levelIdx];
@@ -128,7 +174,9 @@ export default function SequencingPage() {
   const [msg, setMsg] = useState<string | null>(null);
   const [status, setStatus] = useState<"idle" | "success" | "fail">("idle");
   const [step, setStep] = useState(0);
+  const [showHint, setShowHint] = useState(false);
   const timeouts = useRef<number[]>([]);
+  const solution = useMemo(() => solveSequencingLevel(lvl), [lvl]);
 
   useEffect(() => {
     const saved = getLevel("sequencing", LEVELS.length);
@@ -143,10 +191,19 @@ export default function SequencingPage() {
     setMsg(null);
     setStatus("idle");
     setStep(0);
+    setShowHint(false);
     timeouts.current.forEach((t) => window.clearTimeout(t));
     timeouts.current = [];
     setRunning(false);
   }, [levelIdx, lvl]);
+
+  const magicSolve = () => {
+    if (running || solution.length === 0) return;
+    setProgram(solution.map((id) => ({ ...BLOCK_LOOKUP[id], uid: Math.random().toString(36).slice(2, 9) })));
+    setMsg("✨ Magic filled the answer! Press ▶ Run to watch the monkey grab bananas! 🐒🍌");
+    setStatus("idle");
+    setShowHint(false);
+  };
 
   const wallsSet = useMemo(() => new Set(lvl.walls.map((w) => `${w.x},${w.y}`)), [lvl]);
   const expanded = useMemo(() => {
@@ -182,7 +239,7 @@ export default function SequencingPage() {
         const all = coll.every(Boolean);
         if (all) {
           setStatus("success");
-          setMsg("🎉 Amazing! All bananas collected!");
+          setMsg("🎉 WOW! You collected ALL bananas! Monkey is so happy! 🐒💛 You are a coding superstar! ⭐");
           const next = Math.min(levelIdx + 2, LEVELS.length);
           setLevel("sequencing", next);
           setGameProgress("sequencing", { completed: levelIdx === LEVELS.length - 1, stars: 3, level: next });
@@ -192,7 +249,7 @@ export default function SequencingPage() {
           }
         } else {
           setStatus("fail");
-          setMsg("Almost! You missed some bananas. Try again.");
+          setMsg("🌟 Great trying! Some bananas are still waiting! Tap 💡 Hint for help — you are learning so fast! 💪🍌");
         }
         setRunning(false);
         return;
@@ -248,11 +305,11 @@ export default function SequencingPage() {
     <GameShell
       title="Sequencing"
       icon="🐒"
-      subtitle={`Level ${lvl.id} — ${lvl.title} • CodeMonkey Junior style`}
-      color="from-amber-100 to-orange-100 border-amber-200"
+      subtitle={`Level ${lvl.id} — ${lvl.title} • Easy & unlimited ♾️`}
+      color="from-amber-100 to-orange-100 border-amber-200 dark:from-amber-950 dark:to-orange-950 dark:border-amber-800"
       controls={
         <>
-          <button onClick={reset} className="px-3 py-1.5 rounded-full bg-white border text-sm font-bold">Reset</button>
+          <button onClick={reset} className="px-3 py-1.5 rounded-full bg-white border text-sm font-bold dark:bg-slate-800 dark:border-slate-700 dark:text-slate-100">🔄 Try Again</button>
           <button
             onClick={run}
             disabled={running || program.length === 0}
@@ -278,12 +335,27 @@ export default function SequencingPage() {
       }
       canvas={
         <div className="p-3 sm:p-4">
+          <div className="mb-3 flex flex-wrap gap-2">
+            <button onClick={() => setShowHint((v) => !v)} className="px-3 py-1.5 rounded-full bg-amber-100 border border-amber-300 text-amber-900 text-xs font-black hover:bg-amber-200 dark:bg-amber-900 dark:border-amber-700 dark:text-amber-100">
+              💡 {showHint ? "Hide Hint" : "Need a Hint?"}
+            </button>
+            <button onClick={magicSolve} disabled={running || solution.length === 0} className="px-3 py-1.5 rounded-full bg-violet-600 text-white text-xs font-black shadow hover:bg-violet-700 disabled:opacity-40">
+              ✨ Magic Solve for Me
+            </button>
+            <span className="text-[11px] font-bold text-slate-500 dark:text-slate-400 self-center">Asking for help is smart! 🌟 ♾️ Unlimited blocks!</span>
+          </div>
+          {showHint && (
+            <div className="mb-3 px-3 py-2 rounded-xl text-sm font-bold border bg-amber-50 border-amber-200 text-amber-900 dark:bg-amber-950 dark:border-amber-800 dark:text-amber-100">
+              💡 Hint: try — {solution.slice(0, 8).map((s) => (s === "fwd" ? "⬆️ Forward" : s === "left" ? "↩️ Left" : "↪️ Right")).join(" → ")}
+              {solution.length > 8 ? ` … +${solution.length - 8} more!` : ""} Extra blocks are OK! ♾️
+            </div>
+          )}
           {msg && (
-            <div className={`mb-3 px-3 py-2 rounded-xl text-sm font-bold border ${status === "success" ? "bg-emerald-50 border-emerald-200 text-emerald-800" : status === "fail" ? "bg-red-50 border-red-200 text-red-700" : "bg-amber-50 border-amber-200"}`}>{msg}</div>
+            <div className={`mb-3 px-3 py-2 rounded-xl text-sm font-bold border ${status === "success" ? "bg-emerald-50 border-emerald-200 text-emerald-800 dark:bg-emerald-950 dark:border-emerald-800 dark:text-emerald-100" : status === "fail" ? "bg-orange-50 border-orange-200 text-orange-800 dark:bg-orange-950 dark:border-orange-800 dark:text-orange-100" : "bg-amber-50 border-amber-200 dark:bg-slate-800"}`}>{msg}</div>
           )}
           <div className="flex items-center justify-between mb-2">
-            <div className="text-xs font-extrabold tracking-widest text-slate-500">WORLD • {lvl.size}×{lvl.size} • {collected.filter(Boolean).length}/{lvl.bananas.length} 🍌</div>
-            <div className="text-xs font-bold px-2 py-1 rounded-full bg-white border">{expanded.length} steps • max {lvl.maxBlocks}</div>
+            <div className="text-xs font-extrabold tracking-widest text-slate-500 dark:text-slate-400">WORLD • {lvl.size}×{lvl.size} • {collected.filter(Boolean).length}/{lvl.bananas.length} 🍌</div>
+            <div className="text-xs font-bold px-2 py-1 rounded-full bg-white border dark:bg-slate-800 dark:border-slate-700 dark:text-slate-100">{expanded.length} steps • ♾️ Unlimited — more is OK! 🎉</div>
           </div>
 
           {/* Grid */}
@@ -329,12 +401,12 @@ export default function SequencingPage() {
       workspace={
         <div className="space-y-3">
           <BlockWorkspace palette={PALETTE} program={program} setProgram={setProgram} maxBlocks={lvl.maxBlocks} />
-          <div className="rounded-2xl bg-white border p-3">
-            <div className="text-xs font-black tracking-widest text-slate-500">HOW TO PLAY</div>
-            <ul className="mt-1 text-sm text-slate-600 list-disc pl-4 space-y-1 font-medium">
-              <li>Stack blocks in order — top runs first.</li>
-              <li><b>Repeat</b> copies the block above it.</li>
-              <li>Collect all bananas without hitting trees!</li>
+          <div className="rounded-2xl bg-white border p-3 dark:bg-slate-900 dark:border-slate-700">
+            <div className="text-xs font-black tracking-widest text-slate-500 dark:text-slate-400">HOW TO PLAY — SUPER EASY! 🌟</div>
+            <ul className="mt-1 text-sm text-slate-600 dark:text-slate-300 list-disc pl-4 space-y-1 font-medium">
+              <li>👆 Tap blocks to add — as many as you want! ♾️</li>
+              <li>▶️ Press Run to watch the monkey go!</li>
+              <li>🍌 Grab all bananas — bumping is OK, just try again! 💛</li>
             </ul>
           </div>
         </div>
