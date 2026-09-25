@@ -69,8 +69,8 @@ export default function MusicPage() {
     <GameShell
       title="Music"
       icon="🎵"
-      subtitle="Compose with blocks • Hear your sequence"
-      color="from-indigo-100 to-violet-100 border-indigo-200"
+      subtitle="Compose with blocks • Easy & unlimited"
+      color="from-indigo-100 to-violet-100 border-indigo-200 dark:from-indigo-950 dark:to-violet-950 dark:border-indigo-800"
       controls={<button onClick={play} disabled={program.length === 0} className={`px-5 py-1.5 rounded-full font-black text-sm shadow ${program.length ? "bg-indigo-600 text-white" : "bg-slate-200"}`}>▶ Play Song</button>}
       canvas={
         <div className="p-3 sm:p-4">

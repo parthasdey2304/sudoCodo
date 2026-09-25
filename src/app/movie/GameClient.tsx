@@ -100,8 +100,8 @@ export default function MoviePage() {
     <GameShell
       title="Movie"
       icon="🎬"
-      subtitle="Animate with math — time, sin, cos"
-      color="from-slate-900 to-slate-800 border-slate-700"
+      subtitle="Animate with math • Easy & fun"
+      color="from-slate-900 to-slate-800 border-slate-700 dark:from-black dark:to-slate-900"
       controls={
         <>
           <button onClick={() => setPlaying((v) => !v)} className={`px-4 py-1.5 rounded-full font-black text-sm ${playing ? "bg-amber-400 text-slate-900" : "bg-white text-slate-900 border"}`}>{playing ? "⏸ Pause" : "▶ Play"}</button>

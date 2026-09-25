@@ -132,8 +132,8 @@ export default function Home() {
         {/* GAME GRID — H2, then H3 per card (no level skipping) */}
         <section className="max-w-6xl mx-auto px-4 mt-6" aria-labelledby="games-heading">
           <header className="flex items-end justify-between">
-            <h2 id="games-heading" className="font-black text-slate-900 text-lg sm:text-xl">All Block Coding Games</h2>
-            <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-slate-900 text-white">Tap to play</span>
+            <h2 id="games-heading" className="font-black text-slate-900 dark:text-white text-lg sm:text-xl">All Block Coding Games</h2>
+            <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-slate-900 text-white dark:bg-white dark:text-slate-900">Tap to play • ♾️ Unlimited • 🌙 Dark OK</span>
           </header>
 
           <div className="mt-3 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4" role="list" aria-label="Game list">
@@ -216,11 +216,11 @@ export default function Home() {
           </div>
 
           {/* Info strip — H3 cascade, no skipped levels */}
-          <aside className="mt-6 rounded-[20px] border bg-white p-4 sm:p-5 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between" aria-label="Phone-first info">
+          <aside className="mt-6 rounded-[20px] border bg-white p-4 sm:p-5 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between dark:bg-slate-900 dark:border-slate-700" aria-label="Phone-first info">
             <div>
-              <h3 className="font-extrabold text-slate-900">Built for phones first — portrait UI</h3>
-              <p className="text-sm text-slate-600 max-w-xl">
-                Every game is portrait-optimized: canvas on top, toolbox below, big tap targets, no horizontal scroll. Your level &amp; stars are stored in this browser`s cache. Works offline after first load.
+              <h3 className="font-extrabold text-slate-900 dark:text-white">Built for kids — easy, unlimited & portrait UI 🌟</h3>
+              <p className="text-sm text-slate-600 dark:text-slate-300 max-w-xl">
+                Every game is kid-easy: ♾️ unlimited workspace, 💡 hints &amp; ✨ Magic Solve, friendly messages, big tap targets, dark mode 🌙. Canvas on top, toolbox below, no horizontal scroll. Progress saved in this browser`s cache. Works offline after first load.
               </p>
             </div>
             <ResetProgress />
@@ -232,27 +232,27 @@ export default function Home() {
           </div>
 
           {/* SEO text section — adds crawlable copy, avoids CSR-only content */}
-          <section className="mt-8 rounded-[20px] border bg-white p-5" aria-labelledby="learn-heading">
-            <h2 id="learn-heading" className="font-black text-slate-900">Why SudoCodo for learning to code?</h2>
-            <div className="mt-2 grid gap-4 sm:grid-cols-3 text-sm text-slate-600">
+          <section className="mt-8 rounded-[20px] border bg-white p-5 dark:bg-slate-900 dark:border-slate-700" aria-labelledby="learn-heading">
+            <h2 id="learn-heading" className="font-black text-slate-900 dark:text-white">Why SudoCodo for learning to code?</h2>
+            <div className="mt-2 grid gap-4 sm:grid-cols-3 text-sm text-slate-600 dark:text-slate-300">
               <div>
-                <h3 className="font-bold text-slate-900">Block-based, no syntax errors</h3>
-                <p className="mt-1">Drag blocks like puzzle pieces — just like Scratch &amp; Blockly. Kids focus on logic, not typos.</p>
+                <h3 className="font-bold text-slate-900 dark:text-white">Block-based, no syntax errors</h3>
+                <p className="mt-1">Tap blocks like puzzle pieces — just like Scratch &amp; Blockly. Unlimited workspace ♾️, hints 💡 — kids focus on logic, not typos.</p>
               </div>
               <div>
-                <h3 className="font-bold text-slate-900">Sequencing → loops → conditionals</h3>
-                <p className="mt-1">Progression from Puzzle (order) to Maze (loops) to Bird (if/else) to Pond (AI) mirrors real curricula.</p>
+                <h3 className="font-bold text-slate-900 dark:text-white">Sequencing → loops → conditionals</h3>
+                <p className="mt-1">Progression from Puzzle (order) to Maze (loops) to Bird (if/else) to Pond (AI) mirrors real curricula. Magic Solve ✨ helps when stuck.</p>
               </div>
               <div>
-                <h3 className="font-bold text-slate-900">Portraits &amp; privacy</h3>
-                <p className="mt-1">Portrait-first on phones, no account, progress in your browser. Fast, crisp Tailwind UI with zero trackers.</p>
+                <h3 className="font-bold text-slate-900 dark:text-white">Portraits, dark mode &amp; privacy</h3>
+                <p className="mt-1">Portrait-first on phones, 🌙 dark mode, no account, progress in your browser. Fast, crisp Tailwind UI with zero trackers.</p>
               </div>
             </div>
             <nav aria-label="Explore games" className="mt-4 flex flex-wrap gap-2">
-              <Link href="/puzzle" className="text-xs font-bold px-3 py-1.5 rounded-full border bg-slate-50 hover:bg-white">Play Puzzle — beginner</Link>
-              <Link href="/maze" className="text-xs font-bold px-3 py-1.5 rounded-full border bg-slate-50 hover:bg-white">Play Maze — 10 levels</Link>
-              <Link href="/sequencing" className="text-xs font-bold px-3 py-1.5 rounded-full border bg-slate-50 hover:bg-white">Play Sequencing — CodeMonkey style</Link>
-              <Link href="/pond" className="text-xs font-bold px-3 py-1.5 rounded-full border bg-slate-50 hover:bg-white">Play Pond — battle AI</Link>
+              <Link href="/puzzle" className="text-xs font-bold px-3 py-1.5 rounded-full border bg-slate-50 hover:bg-white dark:bg-slate-800 dark:border-slate-700 dark:text-slate-100">Play Puzzle — beginner</Link>
+              <Link href="/maze" className="text-xs font-bold px-3 py-1.5 rounded-full border bg-slate-50 hover:bg-white dark:bg-slate-800 dark:border-slate-700 dark:text-slate-100">Play Maze — 10 levels</Link>
+              <Link href="/sequencing" className="text-xs font-bold px-3 py-1.5 rounded-full border bg-slate-50 hover:bg-white dark:bg-slate-800 dark:border-slate-700 dark:text-slate-100">Play Sequencing — CodeMonkey style</Link>
+              <Link href="/pond" className="text-xs font-bold px-3 py-1.5 rounded-full border bg-slate-50 hover:bg-white dark:bg-slate-800 dark:border-slate-700 dark:text-slate-100">Play Pond — battle AI</Link>
             </nav>
           </section>
         </section>
