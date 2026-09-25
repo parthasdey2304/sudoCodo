@@ -49,8 +49,8 @@ export default function SequencingPage() {
       {/* Single H1 lives in GameShell (SSR'd) — no duplicate needed */}
       <GameClient />
       <section className="max-w-6xl mx-auto px-4 pb-8" aria-labelledby="seq-seo">
-        <h2 id="seq-seo" className="font-black text-slate-900 mt-4">How sequencing teaches coding</h2>
-        <p className="text-sm text-slate-600 mt-1">CodeMonkey Junior sequencing is about putting steps in exact order. This clone uses a 5×5–6×6 grid, monkey &amp; bananas, walls (trees) and repeat blocks. Mirrors the official CodeMonkey sequencing chapter 1 but runs offline with Tailwind portrait UI.</p>
+        <h2 id="seq-seo" className="font-black text-slate-900 dark:text-white mt-4">How sequencing teaches coding</h2>
+        <p className="text-sm text-slate-600 dark:text-slate-300 mt-1">CodeMonkey Junior sequencing is about putting steps in exact order. This clone uses a 5×5–6×6 grid, monkey &amp; bananas, walls (trees) and repeat blocks. Mirrors the official CodeMonkey sequencing chapter 1 but runs offline with Tailwind portrait UI.</p>
       </section>
     </>
   );

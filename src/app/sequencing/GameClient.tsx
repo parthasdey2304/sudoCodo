@@ -111,11 +111,11 @@ const LEVELS: Level[] = [
 ];
 
 const PALETTE: BlockDef[] = [
-  { id: "fwd", label: "Move Forward", icon: "⬆️", color: "bg-sky-50 border-sky-300 text-sky-900", desc: "Step ahead" },
-  { id: "left", label: "Turn Left", icon: "↩️", color: "bg-amber-50 border-amber-300 text-amber-900" },
-  { id: "right", label: "Turn Right", icon: "↪️", color: "bg-amber-50 border-amber-300 text-amber-900" },
-  { id: "r2", label: "Repeat 2×", icon: "🔁", color: "bg-violet-50 border-violet-300 text-violet-900" },
-  { id: "r3", label: "Repeat 3×", icon: "🔂", color: "bg-violet-50 border-violet-300 text-violet-900" },
+  { id: "fwd", label: "Move Forward", icon: "⬆️", color: "bg-[#4C97FF] border-black/20 text-white", desc: "Step ahead" },
+  { id: "left", label: "Turn Left", icon: "↩️", color: "bg-[#4C97FF] border-black/20 text-white" },
+  { id: "right", label: "Turn Right", icon: "↪️", color: "bg-[#4C97FF] border-black/20 text-white" },
+  { id: "r2", label: "Repeat 2×", icon: "🔁", color: "bg-[#FFAB19] border-black/20 text-white" },
+  { id: "r3", label: "Repeat 3×", icon: "🔂", color: "bg-[#FFAB19] border-black/20 text-white" },
 ];
 
 // Kid-friendly solver: BFS collecting all bananas — powers Hint + Magic Solve
@@ -159,9 +159,9 @@ function solveSequencingLevel(lvl: Level): string[] {
 }
 
 const BLOCK_LOOKUP: Record<string, BlockDef> = {
-  fwd: { id: "fwd", label: "Move Forward", icon: "⬆️", color: "bg-sky-50 border-sky-300 text-sky-900" },
-  left: { id: "left", label: "Turn Left", icon: "↩️", color: "bg-amber-50 border-amber-300 text-amber-900" },
-  right: { id: "right", label: "Turn Right", icon: "↪️", color: "bg-amber-50 border-amber-300 text-amber-900" },
+  fwd: { id: "fwd", label: "Move Forward", icon: "⬆️", color: "bg-[#4C97FF] border-black/20 text-white" },
+  left: { id: "left", label: "Turn Left", icon: "↩️", color: "bg-[#4C97FF] border-black/20 text-white" },
+  right: { id: "right", label: "Turn Right", icon: "↪️", color: "bg-[#4C97FF] border-black/20 text-white" },
 };
 
 export default function SequencingPage() {
@@ -326,7 +326,7 @@ export default function SequencingPage() {
             <button
               key={l.id}
               onClick={() => !running && setLevelIdx(i)}
-              className={`shrink-0 w-9 h-9 rounded-xl border-2 font-black text-sm grid place-items-center ${i === levelIdx ? "bg-slate-900 text-white border-slate-900" : i < levelIdx ? "bg-emerald-500 text-white border-emerald-600" : "bg-white"}`}
+              className={`shrink-0 w-9 h-9 rounded-xl border-2 font-black text-sm grid place-items-center ${i === levelIdx ? "bg-slate-900 text-white border-slate-900 dark:bg-white dark:text-slate-900 dark:border-white" : i < levelIdx ? "bg-emerald-500 text-white border-emerald-600" : "bg-white text-slate-700 border-slate-200 dark:bg-slate-800 dark:text-slate-100 dark:border-slate-600"}`}
             >
               {i < levelIdx ? "✓" : l.id}
             </button>
@@ -409,9 +409,9 @@ export default function SequencingPage() {
           </div>
 
           <div className="mt-3 flex flex-wrap gap-2 justify-center">
-            <span className="text-xs px-2 py-1 rounded-full bg-white border font-semibold">🐒 Monkey</span>
-            <span className="text-xs px-2 py-1 rounded-full bg-white border font-semibold">🍌 Banana</span>
-            <span className="text-xs px-2 py-1 rounded-full bg-white border font-semibold">🌳 Obstacle</span>
+            <span className="text-xs px-2 py-1 rounded-full bg-white border border-slate-200 text-slate-700 font-semibold dark:bg-slate-800 dark:border-slate-600 dark:text-slate-100">🐒 Monkey</span>
+            <span className="text-xs px-2 py-1 rounded-full bg-white border border-slate-200 text-slate-700 font-semibold dark:bg-slate-800 dark:border-slate-600 dark:text-slate-100">🍌 Banana</span>
+            <span className="text-xs px-2 py-1 rounded-full bg-white border border-slate-200 text-slate-700 font-semibold dark:bg-slate-800 dark:border-slate-600 dark:text-slate-100">🌳 Obstacle</span>
           </div>
         </div>
       }

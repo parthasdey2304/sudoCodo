@@ -61,8 +61,8 @@ export default function MazePage() {
       {/* Single H1 lives in GameShell (SSR'd) — no duplicate needed */}
       <GameClient />
       <section className="max-w-6xl mx-auto px-4 pb-8" aria-labelledby="maze-seo">
-        <h2 id="maze-seo" className="font-black text-slate-900 mt-4">About this maze game</h2>
-        <p className="text-sm text-slate-600 mt-1">
+        <h2 id="maze-seo" className="font-black text-slate-900 dark:text-white mt-4">About this maze game</h2>
+        <p className="text-sm text-slate-600 dark:text-slate-300 mt-1">
           This Blockly Maze clone teaches sequencing, loops (<code>repeat</code>) and <code>if path ahead</code>. Each of 10 levels increases difficulty — from straight paths to branching mazes. Runs fully in the browser, progress saved to <code>localStorage</code>, no login.
         </p>
       </section>

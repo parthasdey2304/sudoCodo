@@ -38,8 +38,8 @@ export default function PondPage() {
       <Breadcrumbs items={[{ name: "Home", href: "/" }, { name: "Pond Battle", href: "/pond", current: true }]} />
       <GameClient />
       <section className="max-w-6xl mx-auto px-4 pb-8" aria-labelledby="pond-seo">
-        <h2 id="pond-seo" className="font-black text-slate-900 mt-4">Strategy beats syntax</h2>
-        <p className="text-sm text-slate-600 mt-1">Pond is the capstone: combine <code>scan, if enemy → fire, swim &amp; turn</code> in a loop. Your program runs against a simple AI — first to hit wins. No backend needed.</p>
+        <h2 id="pond-seo" className="font-black text-slate-900 dark:text-white mt-4">Strategy beats syntax</h2>
+        <p className="text-sm text-slate-600 dark:text-slate-300 mt-1">Pond is the capstone: combine <code>scan, if enemy → fire, swim &amp; turn</code> in a loop. Your program runs against a simple AI — first to hit wins. No backend needed.</p>
       </section>
     </>
   );

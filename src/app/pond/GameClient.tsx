@@ -8,20 +8,20 @@ import { setGameProgress } from "@/lib/storage";
 type Pos = { x: number; y: number };
 
 const PALETTE: BlockDef[] = [
-  { id: "scan", label: "Scan Enemy", icon: "👁️", color: "bg-sky-50 border-sky-300" },
-  { id: "fire", label: "Fire Cannon", icon: "💥", color: "bg-red-50 border-red-300" },
-  { id: "swim", label: "Swim Forward", icon: "🦆", color: "bg-amber-50 border-amber-300" },
-  { id: "left", label: "Turn Left", icon: "↩️", color: "bg-violet-50 border-violet-300" },
-  { id: "right", label: "Turn Right", icon: "↪️", color: "bg-violet-50 border-violet-300" },
-  { id: "ifEnemy", label: "If Enemy → Fire", icon: "🎯", color: "bg-emerald-50 border-emerald-300" },
-  { id: "repeat", label: "Repeat 3×", icon: "🔁", color: "bg-slate-50 border-slate-300" },
+  { id: "scan", label: "Scan Enemy", icon: "👁️", color: "bg-[#5CB1D6] border-black/20 text-white" },
+  { id: "fire", label: "Fire Cannon", icon: "💥", color: "bg-[#EF4444] border-black/20 text-white" },
+  { id: "swim", label: "Swim Forward", icon: "🦆", color: "bg-[#4C97FF] border-black/20 text-white" },
+  { id: "left", label: "Turn Left", icon: "↩️", color: "bg-[#4C97FF] border-black/20 text-white" },
+  { id: "right", label: "Turn Right", icon: "↪️", color: "bg-[#4C97FF] border-black/20 text-white" },
+  { id: "ifEnemy", label: "If Enemy → Fire", icon: "🎯", color: "bg-[#FFAB19] border-black/20 text-white" },
+  { id: "repeat", label: "Repeat 3×", icon: "🔁", color: "bg-[#FFAB19] border-black/20 text-white" },
 ];
 
 export default function PondPage() {
   const [program, setProgram] = useState<DroppedBlock[]>([
-    { id: "scan", label: "Scan Enemy", icon: "👁️", color: "bg-sky-50 border-sky-300", uid: "1" } as any,
-    { id: "ifEnemy", label: "If Enemy → Fire", icon: "🎯", color: "bg-emerald-50 border-emerald-300", uid: "2" } as any,
-    { id: "swim", label: "Swim Forward", icon: "🦆", color: "bg-amber-50 border-amber-300", uid: "3" } as any,
+    { id: "scan", label: "Scan Enemy", icon: "👁️", color: "bg-[#5CB1D6] border-black/20 text-white", uid: "1" } as any,
+    { id: "ifEnemy", label: "If Enemy → Fire", icon: "🎯", color: "bg-[#FFAB19] border-black/20 text-white", uid: "2" } as any,
+    { id: "swim", label: "Swim Forward", icon: "🦆", color: "bg-[#4C97FF] border-black/20 text-white", uid: "3" } as any,
   ]);
   const [log, setLog] = useState<string[]>(["Ready — press Battle!"]);
   const [score, setScore] = useState({ you: 0, enemy: 0 });
@@ -125,17 +125,17 @@ export default function PondPage() {
           <div className="relative w-full h-[300px] sm:h-[360px] rounded-2xl border-2 overflow-hidden bg-gradient-to-br from-cyan-200 via-sky-200 to-blue-300">
             {/* water ripples */}
             <div className="absolute inset-0 opacity-30" style={{ background: "radial-gradient(circle at 30% 30%, white, transparent 50%)" }} />
-            <div className="absolute left-2 top-2 px-2 py-1 rounded-full bg-white/90 border text-xs font-black">YOU {score.you} — ENEMY {score.enemy}</div>
+            <div className="absolute left-2 top-2 px-2 py-1 rounded-full bg-white/90 border border-slate-200 text-slate-800 text-xs font-black dark:bg-slate-900/90 dark:border-slate-700 dark:text-slate-100">YOU {score.you} — ENEMY {score.enemy}</div>
             {/* enemy */}
             <div className="absolute w-8 h-8 rounded-full bg-red-500 border-2 border-white grid place-items-center shadow -translate-x-1/2 -translate-y-1/2" style={{ left: `${enemy.x}%`, top: `${enemy.y}%` }}>🦢</div>
             {/* you */}
             <div className="absolute w-10 h-10 rounded-full bg-amber-400 border-2 border-white grid place-items-center shadow -translate-x-1/2 -translate-y-1/2 transition-all duration-400" style={{ left: `${pos.x}%`, top: `${pos.y}%`, transform: `translate(-50%,-50%) rotate(${dir}deg)` }}>🦆</div>
             {canon && <div className="absolute w-3 h-3 rounded-full bg-yellow-400 border border-white shadow animate-ping -translate-x-1/2 -translate-y-1/2" style={{ left: `${canon.x}%`, top: `${canon.y}%` }} />}
-            <div className="absolute bottom-2 inset-x-2 rounded-xl bg-white/90 border p-2">
-              <div className="text-[11px] font-black tracking-widest text-slate-500">BATTLE LOG</div>
+            <div className="absolute bottom-2 inset-x-2 rounded-xl bg-white/90 border border-slate-200 p-2 dark:bg-slate-900/90 dark:border-slate-700">
+              <div className="text-[11px] font-black tracking-widest text-slate-500 dark:text-slate-400">BATTLE LOG</div>
               <div className="mt-1 space-y-0.5">
                 {log.map((l, i) => (
-                  <div key={i} className="text-xs font-mono leading-tight">{l}</div>
+                  <div key={i} className="text-xs font-mono leading-tight text-slate-800 dark:text-slate-100">{l}</div>
                 ))}
               </div>
             </div>
@@ -146,9 +146,9 @@ export default function PondPage() {
       workspace={
         <div className="space-y-3">
           <BlockWorkspace palette={PALETTE} program={program} setProgram={setProgram} />
-          <div className="rounded-2xl bg-white border p-3">
-            <div className="text-xs font-black tracking-widest text-slate-500">STRATEGY</div>
-            <p className="text-sm font-medium text-slate-600 mt-1">Combine <b>Scan</b> + <b>If Enemy → Fire</b> for smart firing. Use <b>Swim</b> & turns to chase. This is how the real Blockly Pond works — your code vs AI code.</p>
+          <div className="rounded-2xl bg-white border border-slate-200 p-3 dark:bg-slate-900 dark:border-slate-700">
+            <div className="text-xs font-black tracking-widest text-slate-500 dark:text-slate-400">STRATEGY</div>
+            <p className="text-sm font-medium text-slate-600 dark:text-slate-300 mt-1">Combine <b>Scan</b> + <b>If Enemy → Fire</b> for smart firing. Use <b>Swim</b> & turns to chase. This is how the real Blockly Pond works — your code vs AI code.</p>
           </div>
         </div>
       }

@@ -11,6 +11,14 @@ export type BlockDef = {
 
 export type DroppedBlock = BlockDef & { uid: string };
 
+// Scratch-style interlocking block: top notch groove (before) + bottom nub tab (after, opt-in).
+// Nub uses bg-inherit so it always matches its own block color, like real Scratch blocks.
+const SCRATCH_BASE =
+  "relative rounded-lg border-2 border-black/20 shadow-[0_3px_0_rgba(0,0,0,0.25)] " +
+  "before:content-[''] before:absolute before:top-[6px] before:left-7 before:w-12 before:h-[10px] before:rounded-b-lg before:bg-black/25 before:pointer-events-none";
+const SCRATCH_NUB =
+  "after:content-[''] after:absolute after:-bottom-[11px] after:left-7 after:w-12 after:h-[11px] after:rounded-b-lg after:bg-inherit after:pointer-events-none";
+
 export default function BlockWorkspace({
   palette,
   program,
@@ -53,14 +61,14 @@ export default function BlockWorkspace({
               onDragStart={() => setDrag(b)}
               onDragEnd={() => setDrag(null)}
               onClick={() => addBlock(b)}
-              className={`text-left px-3 py-2.5 rounded-xl border-2 font-bold text-sm flex items-center gap-2 active:scale-[0.98] transition ${b.color}`}
+              className={`text-left pl-3 pr-2 pt-4 pb-2.5 font-bold text-sm flex items-center gap-2 active:scale-[0.98] transition ${SCRATCH_BASE} ${b.color}`}
             >
-              <span className="text-base">{b.icon || "◆"}</span>
+              <span className="text-base" aria-hidden="true">{b.icon || "◆"}</span>
               <span className="leading-tight">{b.label}</span>
             </button>
           ))}
         </div>
-        <p className="mt-2 text-[11px] text-slate-500 dark:text-slate-400">👆 Tap to add • drag to reorder • as many blocks as you like!</p>
+        <p className="mt-2 text-[11px] text-slate-500 dark:text-slate-400">👆 Tap to add • nub fits into the notch, just like Scratch! 🧩</p>
       </div>
 
       {/* PROGRAM */}
@@ -87,7 +95,7 @@ export default function BlockWorkspace({
               {unlimited ? "♾️ Unlimited ON" : "🎯 Challenge"}
             </button>
             {program.length > 0 && (
-              <button onClick={() => setProgram([])} className="text-xs font-bold px-2 py-1 rounded-full bg-white border hover:bg-red-50 hover:text-red-600">
+              <button onClick={() => setProgram([])} className="text-xs font-bold px-2 py-1 rounded-full bg-white border border-slate-200 text-slate-600 hover:bg-red-50 hover:text-red-600 dark:bg-slate-800 dark:border-slate-600 dark:text-slate-100">
                 Clear
               </button>
             )}
@@ -111,7 +119,7 @@ export default function BlockWorkspace({
             <p className="text-xs text-slate-400">Build your program in order — top to bottom runs first</p>
           </div>
         ) : (
-          <div className="mt-3 flex flex-col gap-2">
+          <div className="mt-3 flex flex-col">
             {program.map((b, i) => (
               <div
                 key={b.uid}
@@ -125,11 +133,12 @@ export default function BlockWorkspace({
                   const from = Number(e.dataTransfer.getData("text/plain"));
                   if (!isNaN(from)) move(from, i);
                 }}
-                className={`group flex items-center gap-2 px-3 py-2.5 rounded-xl border-2 font-bold text-sm shadow-sm ${b.color}`}
+                style={{ zIndex: program.length - i }}
+                className={`group flex items-center gap-2 pl-3 pr-2 pt-4 pb-3 mb-[-3px] last:mb-0 font-bold text-sm ${SCRATCH_BASE} ${SCRATCH_NUB} ${b.color}`}
               >
-                <span className="w-6 h-6 rounded-lg bg-white/80 grid place-items-center text-xs border">{i + 1}</span>
+                <span className="w-6 h-6 rounded-md bg-black/25 text-white grid place-items-center text-xs font-black border border-white/30">{i + 1}</span>
                 <span className="flex-1">{b.icon} {b.label}</span>
-                <button onClick={() => removeAt(b.uid)} className="w-7 h-7 rounded-full bg-white border grid place-items-center text-slate-500 hover:text-red-600">×</button>
+                <button onClick={() => removeAt(b.uid)} aria-label="Remove block" className="w-7 h-7 rounded-full bg-white/90 border border-black/10 grid place-items-center text-slate-600 font-black hover:text-red-600">×</button>
               </div>
             ))}
           </div>

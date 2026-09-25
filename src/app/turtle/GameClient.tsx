@@ -7,16 +7,16 @@ import { getLevel, setLevel, setGameProgress } from "@/lib/storage";
 type Cmd = { type: "fwd" | "left" | "right" | "pen" | "color"; v?: number | string };
 
 const PALETTE: BlockDef[] = [
-  { id: "fwd50", label: "Move 50", icon: "➡️", color: "bg-sky-50 border-sky-300" },
-  { id: "fwd100", label: "Move 100", icon: "⬆️", color: "bg-sky-50 border-sky-300" },
-  { id: "left90", label: "Turn Left 90°", icon: "↩️", color: "bg-amber-50 border-amber-300" },
-  { id: "right90", label: "Turn Right 90°", icon: "↪️", color: "bg-amber-50 border-amber-300" },
-  { id: "left45", label: "Turn 45°", icon: "↪️", color: "bg-amber-50 border-amber-300" },
-  { id: "repeat4", label: "Repeat 4×", icon: "🔁", color: "bg-violet-50 border-violet-300" },
-  { id: "repeat36", label: "Repeat 36×", icon: "🔂", color: "bg-violet-50 border-violet-300" },
-  { id: "color", label: "Random Color", icon: "🎨", color: "bg-pink-50 border-pink-300" },
-  { id: "penup", label: "Pen Up", icon: "✏️", color: "bg-slate-50 border-slate-300" },
-  { id: "pendown", label: "Pen Down", icon: "🖊️", color: "bg-slate-50 border-slate-300" },
+  { id: "fwd50", label: "Move 50", icon: "➡️", color: "bg-[#4C97FF] border-black/20 text-white" },
+  { id: "fwd100", label: "Move 100", icon: "⬆️", color: "bg-[#4C97FF] border-black/20 text-white" },
+  { id: "left90", label: "Turn Left 90°", icon: "↩️", color: "bg-[#4C97FF] border-black/20 text-white" },
+  { id: "right90", label: "Turn Right 90°", icon: "↪️", color: "bg-[#4C97FF] border-black/20 text-white" },
+  { id: "left45", label: "Turn 45°", icon: "↪️", color: "bg-[#4C97FF] border-black/20 text-white" },
+  { id: "repeat4", label: "Repeat 4×", icon: "🔁", color: "bg-[#FFAB19] border-black/20 text-white" },
+  { id: "repeat36", label: "Repeat 36×", icon: "🔂", color: "bg-[#FFAB19] border-black/20 text-white" },
+  { id: "color", label: "Random Color", icon: "🎨", color: "bg-[#CF63CF] border-black/20 text-white" },
+  { id: "penup", label: "Pen Up", icon: "✏️", color: "bg-[#6B7280] border-black/20 text-white" },
+  { id: "pendown", label: "Pen Down", icon: "🖊️", color: "bg-[#6B7280] border-black/20 text-white" },
 ];
 
 const PRESETS = [
@@ -147,7 +147,7 @@ export default function TurtlePage() {
       color="from-teal-100 to-emerald-100 border-teal-200 dark:from-teal-950 dark:to-emerald-950 dark:border-teal-800"
       controls={
         <>
-          <button onClick={clear} className="px-3 py-1.5 rounded-full bg-white border text-sm font-bold">Clear</button>
+          <button onClick={clear} className="px-3 py-1.5 rounded-full bg-white border border-slate-200 text-slate-700 text-sm font-bold dark:bg-slate-800 dark:border-slate-700 dark:text-slate-100">Clear</button>
           <button onClick={run} className="px-5 py-1.5 rounded-full bg-teal-600 text-white font-black text-sm shadow">▶ Draw</button>
         </>
       }
@@ -158,11 +158,11 @@ export default function TurtlePage() {
               <button
                 key={p.name}
                 onClick={() => {
-                  if (p.name === "Square") setProgram([{ id: "fwd100", label: "Move 100", icon: "⬆️", color: "bg-sky-50 border-sky-300", uid: "a" } as any, { id: "right90", label: "Turn Right 90°", icon: "↪️", color: "bg-amber-50 border-amber-300", uid: "b" } as any, { id: "repeat4", label: "Repeat 4×", icon: "🔁", color: "bg-violet-50 border-violet-300", uid: "c" } as any]);
-                  if (p.name === "Star") setProgram([{ id: "fwd100", label: "Move 100", icon: "⬆️", color: "", uid: "a" } as any, { id: "left45", label: "Turn 45°", icon: "", color: "", uid: "b" } as any, { id: "repeat36", label: "Repeat 36×", icon: "", color: "", uid: "c" } as any]);
-                  if (p.name === "Spiral") setProgram([{ id: "fwd50", label: "Move 50", icon: "", color: "", uid: "a" } as any, { id: "right90", label: "Turn Right 90°", icon: "", color: "", uid: "b" } as any, { id: "color", label: "Random Color", icon: "", color: "", uid: "c" } as any, { id: "repeat36", label: "Repeat 36×", icon: "", color: "", uid: "d" } as any]);
+                  if (p.name === "Square") setProgram([{ id: "fwd100", label: "Move 100", icon: "⬆️", color: "bg-[#4C97FF] border-black/20 text-white", uid: "a" } as any, { id: "right90", label: "Turn Right 90°", icon: "↪️", color: "bg-[#4C97FF] border-black/20 text-white", uid: "b" } as any, { id: "repeat4", label: "Repeat 4×", icon: "🔁", color: "bg-[#FFAB19] border-black/20 text-white", uid: "c" } as any]);
+                  if (p.name === "Star") setProgram([{ id: "fwd100", label: "Move 100", icon: "⬆️", color: "bg-[#4C97FF] border-black/20 text-white", uid: "a" } as any, { id: "left45", label: "Turn 45°", icon: "↪️", color: "bg-[#4C97FF] border-black/20 text-white", uid: "b" } as any, { id: "repeat36", label: "Repeat 36×", icon: "🔂", color: "bg-[#FFAB19] border-black/20 text-white", uid: "c" } as any]);
+                  if (p.name === "Spiral") setProgram([{ id: "fwd50", label: "Move 50", icon: "➡️", color: "bg-[#4C97FF] border-black/20 text-white", uid: "a" } as any, { id: "right90", label: "Turn Right 90°", icon: "↪️", color: "bg-[#4C97FF] border-black/20 text-white", uid: "b" } as any, { id: "color", label: "Random Color", icon: "🎨", color: "bg-[#CF63CF] border-black/20 text-white", uid: "c" } as any, { id: "repeat36", label: "Repeat 36×", icon: "🔂", color: "bg-[#FFAB19] border-black/20 text-white", uid: "d" } as any]);
                 }}
-                className="px-2.5 py-1 rounded-full bg-white border text-xs font-bold hover:bg-slate-50"
+                className="px-2.5 py-1 rounded-full bg-white border border-slate-200 text-slate-700 text-xs font-bold hover:bg-slate-50 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-100"
               >
                 {p.icon} {p.name}
               </button>
@@ -175,9 +175,9 @@ export default function TurtlePage() {
       workspace={
         <div className="space-y-3">
           <BlockWorkspace palette={PALETTE} program={program} setProgram={setProgram} />
-          <div className="rounded-2xl bg-white border p-3">
-            <div className="text-xs font-black tracking-widest text-slate-500">CHALLENGES</div>
-            <ul className="mt-2 space-y-1.5 text-sm font-medium">
+          <div className="rounded-2xl bg-white border border-slate-200 p-3 dark:bg-slate-900 dark:border-slate-700">
+            <div className="text-xs font-black tracking-widest text-slate-500 dark:text-slate-400">CHALLENGES</div>
+            <ul className="mt-2 space-y-1.5 text-sm font-medium text-slate-700 dark:text-slate-200">
               <li>⬜ Try to draw a perfect square (Revisit Puzzle!)</li>
               <li>⭐ Star: Move + Turn 144° ×5</li>
               <li>🌀 Spiral: keep increasing distance</li>
