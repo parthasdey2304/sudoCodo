@@ -35,7 +35,7 @@ export default function Celebration({
   if (!open) return null;
   return (
     <div className="fixed inset-0 z-[70] bg-slate-900/60 backdrop-blur-sm grid place-items-center p-4 overflow-y-auto" role="dialog" aria-modal="true" aria-label={title}>
-      <div className="relative rounded-[28px] bg-white dark:bg-slate-900 border-4 border-amber-300 dark:border-amber-600 p-6 sm:p-8 text-center max-w-sm w-full shadow-2xl overflow-hidden my-auto">
+      <div className="relative rounded-[28px] bg-white dark:bg-slate-900 p-6 sm:p-8 text-center max-w-sm w-full shadow-[0_25px_80px_-12px_rgba(0,0,0,0.65)] overflow-hidden my-auto">
         {/* confetti shower */}
         <div className="absolute inset-x-0 top-0 h-20 pointer-events-none" aria-hidden="true">
           {CONFETTI.map((c, i) => (
