@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import GameShell from "@/components/GameShell";
+import Celebration from "@/components/Celebration";
 import BlockWorkspace, { BlockDef, DroppedBlock } from "@/components/BlockWorkspace";
 import { setGameProgress } from "@/lib/storage";
 
@@ -28,6 +29,7 @@ export default function PondPage() {
   const [enemy, setEnemy] = useState<Pos>({ x: 50, y: 20 });
   const [dir, setDir] = useState(0);
   const [canon, setCanon] = useState<Pos | null>(null);
+  const [showCeleb, setShowCeleb] = useState(false);
   const raf = useRef<number>(0);
   const tRef = useRef(0);
 
@@ -53,7 +55,10 @@ export default function PondPage() {
         logs.push(win ? "🏆 You win the duel!" : youScore === enemyScore ? "🤝 Draw!" : "💥 Enemy wins — tweak your logic!");
         setLog([...logs]);
         setScore({ you: youScore, enemy: enemyScore });
-        if (win) setGameProgress("pond", { completed: true, stars: 3 });
+        if (win) {
+          setGameProgress("pond", { completed: true, stars: 3 });
+          setShowCeleb(true);
+        }
         cancelAnimationFrame(raf.current);
         return;
       }
@@ -104,6 +109,19 @@ export default function PondPage() {
       controls={<button onClick={battle} className="px-5 py-1.5 rounded-full bg-cyan-600 text-white font-black text-sm shadow">⚔️ Battle</button>}
       canvas={
         <div className="p-3">
+          <Celebration
+            open={showCeleb}
+            mascot="🦆"
+            title="DUEL CHAMPION!"
+            message={`Your duck outscored the enemy AI ${score.you} to ${score.enemy}! Brilliant battle code, commander! ⚔️`}
+            primaryLabel="⚔️ Battle again!"
+            onPrimary={() => {
+              setShowCeleb(false);
+              battle();
+            }}
+            secondaryLabel="👀 Keep exploring"
+            onSecondary={() => setShowCeleb(false)}
+          />
           <div className="relative w-full h-[300px] sm:h-[360px] rounded-2xl border-2 overflow-hidden bg-gradient-to-br from-cyan-200 via-sky-200 to-blue-300">
             {/* water ripples */}
             <div className="absolute inset-0 opacity-30" style={{ background: "radial-gradient(circle at 30% 30%, white, transparent 50%)" }} />

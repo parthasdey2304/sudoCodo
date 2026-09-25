@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useMemo, useState, useRef } from "react";
 import GameShell from "@/components/GameShell";
+import Celebration from "@/components/Celebration";
 import BlockWorkspace, { BlockDef, DroppedBlock } from "@/components/BlockWorkspace";
 import { getLevel, setLevel, setGameProgress } from "@/lib/storage";
 
@@ -83,6 +84,7 @@ export default function BirdPage() {
   const [msg, setMsg] = useState<string | null>(null);
   const [status, setStatus] = useState<"idle" | "win" | "fail">("idle");
   const [showHint, setShowHint] = useState(false);
+  const [showCeleb, setShowCeleb] = useState(false);
   const timers = useRef<number[]>([]);
   const solution = useMemo(() => solveBirdLevel(lvl), [lvl]);
 
@@ -97,6 +99,7 @@ export default function BirdPage() {
     setMsg(null);
     setStatus("idle");
     setShowHint(false);
+    setShowCeleb(false);
     timers.current.forEach((t) => window.clearTimeout(t));
     timers.current = [];
     setRunning(false);
@@ -117,6 +120,7 @@ export default function BirdPage() {
     setWorms([lvl.worm, (lvl as any).worm2].filter(Boolean) as Pos[]);
     setMsg(null);
     setStatus("idle");
+    setShowCeleb(false);
   };
 
   const wallSet = useMemo(() => new Set(lvl.walls.map((w) => `${w.x},${w.y}`)), [lvl]);
@@ -148,7 +152,7 @@ export default function BirdPage() {
           const nxt = Math.min(idx + 2, LEVELS.length);
           setLevel("bird", nxt);
           setGameProgress("bird", { level: nxt, completed: idx === LEVELS.length - 1, stars: 3 });
-          if (idx < LEVELS.length - 1) timers.current.push(window.setTimeout(() => setIdx((v) => v + 1), 1300));
+          setShowCeleb(true);
         } else {
           setMsg("🌟 Nice flying! Worm is still hungry-waiting! Tap 💡 Hint — you are doing great! 💪🪱");
           setStatus("fail");
@@ -217,6 +221,22 @@ export default function BirdPage() {
       }
       canvas={
         <div className="p-3 sm:p-4">
+          <Celebration
+            open={showCeleb}
+            mascot="🐦"
+            title="BIRDIE IS FULL!"
+            message={`Yummy! Birdie gobbled every worm on level ${lvl.id}! What a clever pilot! 🪱`}
+            primaryLabel={idx < LEVELS.length - 1 ? `Next → Level ${lvl.id + 1}` : "★ All worms eaten!"}
+            onPrimary={() => {
+              setShowCeleb(false);
+              if (idx < LEVELS.length - 1) setIdx((v) => v + 1);
+            }}
+            secondaryLabel="🔄 Fly this level again"
+            onSecondary={() => {
+              setShowCeleb(false);
+              resetAll();
+            }}
+          />
           <div className="mb-3 flex flex-wrap gap-2">
             <button onClick={() => setShowHint((v) => !v)} className="px-3 py-1.5 rounded-full bg-amber-100 border border-amber-300 text-amber-900 text-xs font-black hover:bg-amber-200 dark:bg-amber-900 dark:border-amber-700 dark:text-amber-100">
               💡 {showHint ? "Hide Hint" : "Need a Hint?"}

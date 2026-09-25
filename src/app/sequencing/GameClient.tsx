@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
 import GameShell from "@/components/GameShell";
+import Celebration from "@/components/Celebration";
 import BlockWorkspace, { BlockDef, DroppedBlock } from "@/components/BlockWorkspace";
 import { getLevel, setLevel, setGameProgress } from "@/lib/storage";
 
@@ -175,6 +176,7 @@ export default function SequencingPage() {
   const [status, setStatus] = useState<"idle" | "success" | "fail">("idle");
   const [step, setStep] = useState(0);
   const [showHint, setShowHint] = useState(false);
+  const [showCeleb, setShowCeleb] = useState(false);
   const timeouts = useRef<number[]>([]);
   const solution = useMemo(() => solveSequencingLevel(lvl), [lvl]);
 
@@ -192,6 +194,7 @@ export default function SequencingPage() {
     setStatus("idle");
     setStep(0);
     setShowHint(false);
+    setShowCeleb(false);
     timeouts.current.forEach((t) => window.clearTimeout(t));
     timeouts.current = [];
     setRunning(false);
@@ -243,10 +246,7 @@ export default function SequencingPage() {
           const next = Math.min(levelIdx + 2, LEVELS.length);
           setLevel("sequencing", next);
           setGameProgress("sequencing", { completed: levelIdx === LEVELS.length - 1, stars: 3, level: next });
-          if (levelIdx < LEVELS.length - 1) {
-            const t = window.setTimeout(() => setLevelIdx((v) => v + 1), 1400);
-            timeouts.current.push(t);
-          }
+          setShowCeleb(true);
         } else {
           setStatus("fail");
           setMsg("🌟 Great trying! Some bananas are still waiting! Tap 💡 Hint for help — you are learning so fast! 💪🍌");
@@ -293,6 +293,7 @@ export default function SequencingPage() {
     setStep(0);
     setMsg(null);
     setStatus("idle");
+    setShowCeleb(false);
   };
 
   const gridCells = useMemo(() => {
@@ -335,6 +336,22 @@ export default function SequencingPage() {
       }
       canvas={
         <div className="p-3 sm:p-4">
+          <Celebration
+            open={showCeleb}
+            mascot="🐒"
+            title="BANANAS COLLECTED!"
+            message={`Monkey munched every banana on level ${lvl.id}! You ordered the steps perfectly! 🍌`}
+            primaryLabel={levelIdx < LEVELS.length - 1 ? `Next → Level ${lvl.id + 1}` : "★ All bananas collected!"}
+            onPrimary={() => {
+              setShowCeleb(false);
+              if (levelIdx < LEVELS.length - 1) setLevelIdx((v) => v + 1);
+            }}
+            secondaryLabel="🔄 Play this level again"
+            onSecondary={() => {
+              setShowCeleb(false);
+              reset();
+            }}
+          />
           <div className="mb-3 flex flex-wrap gap-2">
             <button onClick={() => setShowHint((v) => !v)} className="px-3 py-1.5 rounded-full bg-amber-100 border border-amber-300 text-amber-900 text-xs font-black hover:bg-amber-200 dark:bg-amber-900 dark:border-amber-700 dark:text-amber-100">
               💡 {showHint ? "Hide Hint" : "Need a Hint?"}
