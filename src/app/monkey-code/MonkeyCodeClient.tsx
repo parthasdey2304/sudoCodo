@@ -65,16 +65,16 @@ const LEVELS: Level[] = [
 ];
 
 const PALETTE: BlockDef[] = [
-  { id: "right", label: "Move Right", icon: "➡️", color: "bg-sky-50 border-sky-300 text-sky-900" },
-  { id: "left", label: "Move Left", icon: "⬅️", color: "bg-sky-50 border-sky-300 text-sky-900" },
-  { id: "up", label: "Move Up", icon: "⬆️", color: "bg-teal-50 border-teal-300 text-teal-900" },
-  { id: "down", label: "Move Down", icon: "⬇️", color: "bg-teal-50 border-teal-300 text-teal-900" },
-  { id: "jump", label: "Jump", icon: "⏫", color: "bg-amber-50 border-amber-300 text-amber-900" },
-  { id: "jumpr", label: "Jump Right", icon: "↗️", color: "bg-orange-50 border-orange-300 text-orange-900" },
-  { id: "jumpl", label: "Jump Left", icon: "↖️", color: "bg-orange-50 border-orange-300 text-orange-900" },
-  { id: "r2", label: "Repeat ×2", icon: "🔁", color: "bg-violet-50 border-violet-300 text-violet-900" },
-  { id: "r3", label: "Repeat ×3", icon: "🔂", color: "bg-violet-50 border-violet-300 text-violet-900" },
-  { id: "r4", label: "Repeat ×4", icon: "🔂", color: "bg-violet-50 border-violet-300 text-violet-900" },
+  { id: "right", label: "Move Right", icon: "➡️", color: "bg-[#4C97FF] border-black/20 text-white" },
+  { id: "left", label: "Move Left", icon: "⬅️", color: "bg-[#4C97FF] border-black/20 text-white" },
+  { id: "up", label: "Move Up", icon: "⬆️", color: "bg-[#4C97FF] border-black/20 text-white" },
+  { id: "down", label: "Move Down", icon: "⬇️", color: "bg-[#4C97FF] border-black/20 text-white" },
+  { id: "jump", label: "Jump", icon: "⏫", color: "bg-[#4C97FF] border-black/20 text-white" },
+  { id: "jumpr", label: "Jump Right", icon: "↗️", color: "bg-[#4C97FF] border-black/20 text-white" },
+  { id: "jumpl", label: "Jump Left", icon: "↖️", color: "bg-[#4C97FF] border-black/20 text-white" },
+  { id: "r2", label: "Repeat ×2", icon: "🔁", color: "bg-[#FFAB19] border-black/20 text-white" },
+  { id: "r3", label: "Repeat ×3", icon: "🔂", color: "bg-[#FFAB19] border-black/20 text-white" },
+  { id: "r4", label: "Repeat ×4", icon: "🔂", color: "bg-[#FFAB19] border-black/20 text-white" },
 ];
 
 const PY_FN: Record<Action, string> = {

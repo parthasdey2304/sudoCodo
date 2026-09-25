@@ -111,17 +111,17 @@ export default function MoviePage() {
         <div className="p-3">
           <div className="flex gap-2 overflow-x-auto pb-2">
             {SCENES.map((s, i) => (
-              <button key={s.id} onClick={() => setScene(i)} className={`shrink-0 px-3 py-1.5 rounded-full border text-xs font-black ${i === scene ? "bg-slate-900 text-white" : "bg-white"}`}>{s.name}</button>
+              <button key={s.id} onClick={() => setScene(i)} className={`shrink-0 px-3 py-1.5 rounded-full border text-xs font-black ${i === scene ? "bg-slate-900 text-white dark:bg-white dark:text-slate-900" : "bg-white text-slate-700 border-slate-200 dark:bg-slate-800 dark:text-slate-100 dark:border-slate-600"}`}>{s.name}</button>
             ))}
           </div>
           <canvas ref={canvasRef} className="w-full h-[300px] sm:h-[380px] rounded-2xl border bg-slate-900" style={{ width: "100%" }} />
           <div className="mt-3 grid grid-cols-2 gap-3">
-            <label className="bg-white border rounded-xl p-3">
+            <label className="bg-white border border-slate-200 text-slate-700 rounded-xl p-3 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-100">
               <div className="text-xs font-black tracking-widest text-slate-500">SPEED</div>
               <input type="range" min={0.2} max={3} step={0.1} value={speed} onChange={(e) => setSpeed(parseFloat(e.target.value))} className="w-full mt-1" />
               <div className="text-xs font-bold text-center">{speed.toFixed(1)}×</div>
             </label>
-            <label className="bg-white border rounded-xl p-3">
+            <label className="bg-white border border-slate-200 text-slate-700 rounded-xl p-3 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-100">
               <div className="text-xs font-black tracking-widest text-slate-500">SCALE</div>
               <input type="range" min={0.5} max={2} step={0.1} value={scale} onChange={(e) => setScale(parseFloat(e.target.value))} className="w-full mt-1" />
               <div className="text-xs font-bold text-center">{scale.toFixed(1)}×</div>
@@ -131,12 +131,12 @@ export default function MoviePage() {
       }
       workspace={
         <div className="space-y-3">
-          <div className="rounded-2xl bg-white border p-4">
-            <div className="text-xs font-black tracking-widest text-slate-500">FORMULA</div>
+          <div className="rounded-2xl bg-white border border-slate-200 p-4 dark:bg-slate-900 dark:border-slate-700">
+            <div className="text-xs font-black tracking-widest text-slate-500 dark:text-slate-400">FORMULA</div>
             <code className="mt-2 block bg-slate-900 text-emerald-300 rounded-xl p-3 text-xs font-mono">{SCENES[scene].formula}</code>
-            <p className="mt-2 text-sm text-slate-600 font-medium">In the original Blockly Movie, you type equations for <b>x, y</b> each frame. Here you tweak speed & scale — portrait sliders, instant feedback, saved to cache.</p>
+            <p className="mt-2 text-sm text-slate-600 dark:text-slate-300 font-medium">In the original Blockly Movie, you type equations for <b>x, y</b> each frame. Here you tweak speed & scale — portrait sliders, instant feedback, saved to cache.</p>
           </div>
-          <div className="rounded-2xl bg-amber-50 border border-amber-200 p-3">
+          <div className="rounded-2xl bg-amber-50 border border-amber-200 p-3 dark:bg-amber-950 dark:border-amber-800 dark:text-amber-100">
             <div className="font-bold text-sm">🎯 Try</div>
             <ul className="text-sm list-disc pl-4 mt-1 space-y-1">
               <li>Make the ball bounce faster</li>

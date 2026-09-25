@@ -37,8 +37,8 @@ export default function BirdPage() {
       <Breadcrumbs items={[{ name: "Home", href: "/" }, { name: "Bird Coding Game", href: "/bird", current: true }]} />
       <GameClient />
       <section className="max-w-6xl mx-auto px-4 pb-8" aria-labelledby="bird-seo">
-        <h2 id="bird-seo" className="font-black text-slate-900 mt-4">Learn if/else with Bird</h2>
-        <p className="text-sm text-slate-600 mt-1">Fly the bird to worms using directional blocks plus <code>if worm ahead</code> and repeat — the classic Blockly Bird conditional game, now phone-portrait and saved to cache.</p>
+        <h2 id="bird-seo" className="font-black text-slate-900 dark:text-white mt-4">Learn if/else with Bird</h2>
+        <p className="text-sm text-slate-600 dark:text-slate-300 mt-1">Fly the bird to worms using directional blocks plus <code>if worm ahead</code> and repeat — the classic Blockly Bird conditional game, now phone-portrait and saved to cache.</p>
       </section>
     </>
   );

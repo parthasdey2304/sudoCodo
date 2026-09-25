@@ -10,14 +10,14 @@ const PALETTE: BlockDef[] = NOTES.map((n) => ({
   id: n,
   label: n === "C2" ? "High C" : `Note ${n}`,
   icon: "🎵",
-  color: n === "C" || n === "G" ? "bg-indigo-50 border-indigo-300" : "bg-white border-slate-300",
+  color: "bg-[#CF63CF] border-black/20 text-white",
 })) as BlockDef[];
 
 export default function MusicPage() {
   const [program, setProgram] = useState<DroppedBlock[]>([
-    { id: "C", label: "Note C", icon: "🎵", color: "bg-indigo-50 border-indigo-300", uid: "1" } as any,
-    { id: "E", label: "Note E", icon: "🎵", color: "bg-indigo-50 border-indigo-300", uid: "2" } as any,
-    { id: "G", label: "Note G", icon: "🎵", color: "bg-indigo-50 border-indigo-300", uid: "3" } as any,
+    { id: "C", label: "Note C", icon: "🎵", color: "bg-[#CF63CF] border-black/20 text-white", uid: "1" } as any,
+    { id: "E", label: "Note E", icon: "🎵", color: "bg-[#CF63CF] border-black/20 text-white", uid: "2" } as any,
+    { id: "G", label: "Note G", icon: "🎵", color: "bg-[#CF63CF] border-black/20 text-white", uid: "3" } as any,
   ]);
   const [playingIdx, setPlayingIdx] = useState<number | null>(null);
   const [tempo, setTempo] = useState(120);
@@ -107,7 +107,7 @@ export default function MusicPage() {
             </div>
             <div className="mt-3 flex flex-wrap gap-2">
               <button onClick={() => setProgram([])} className="px-3 py-1.5 rounded-full bg-white/10 border border-white/20 text-xs font-bold">Clear</button>
-              <button onClick={() => setProgram([{ id: "C", label: "", icon: "", color: "", uid: "a" } as any, { id: "C", label: "", icon: "", color: "", uid: "b" } as any, { id: "G", label: "", icon: "", color: "", uid: "c" } as any, { id: "G", label: "", icon: "", color: "", uid: "d" } as any, { id: "A", label: "", icon: "", color: "", uid: "e" } as any, { id: "A", label: "", icon: "", color: "", uid: "f" } as any, { id: "G", label: "", icon: "", color: "", uid: "g" } as any])} className="px-3 py-1.5 rounded-full bg-white text-slate-900 text-xs font-black">Twinkle Demo</button>
+              <button onClick={() => { const N = (id: string, uid: string) => ({ id, label: id === "C2" ? "High C" : `Note ${id}`, icon: "🎵", color: "bg-[#CF63CF] border-black/20 text-white", uid }) as any; setProgram([N("C", "a"), N("C", "b"), N("G", "c"), N("G", "d"), N("A", "e"), N("A", "f"), N("G", "g")]); }} className="px-3 py-1.5 rounded-full bg-white text-slate-900 text-xs font-black">Twinkle Demo</button>
             </div>
           </div>
         </div>
@@ -115,9 +115,9 @@ export default function MusicPage() {
       workspace={
         <div className="space-y-3">
           <BlockWorkspace palette={PALETTE} program={program} setProgram={setProgram} />
-          <div className="rounded-2xl bg-white border p-3">
-            <div className="text-xs font-black tracking-widest text-slate-500">TIP</div>
-            <p className="text-sm font-medium text-slate-600 mt-1">Each block is a note. Order = melody. Adjust tempo and press Play — audio is generated with Web Audio API, no files needed. Saved locally.</p>
+          <div className="rounded-2xl bg-white border border-slate-200 p-3 dark:bg-slate-900 dark:border-slate-700">
+            <div className="text-xs font-black tracking-widest text-slate-500 dark:text-slate-400">TIP</div>
+            <p className="text-sm font-medium text-slate-600 dark:text-slate-300 mt-1">Each block is a note. Order = melody. Adjust tempo and press Play — audio is generated with Web Audio API, no files needed. Saved locally.</p>
           </div>
         </div>
       }

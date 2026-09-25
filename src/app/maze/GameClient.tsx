@@ -39,11 +39,11 @@ const ALL_LEVELS: MazeLevel[] = [
 ];
 
 const BLOCK_DEFS: Record<string, BlockDef> = {
-  fwd: { id: "fwd", label: "Move Forward", icon: "⬆️", color: "bg-sky-50 border-sky-300 text-sky-900" },
-  left: { id: "left", label: "Turn Left", icon: "↩️", color: "bg-amber-50 border-amber-300 text-amber-900" },
-  right: { id: "right", label: "Turn Right", icon: "↪️", color: "bg-amber-50 border-amber-300 text-amber-900" },
-  repeat: { id: "repeat", label: "Repeat 4×", icon: "🔁", color: "bg-violet-50 border-violet-300 text-violet-900" },
-  if: { id: "if", label: "If path ahead → move", icon: "❓", color: "bg-emerald-50 border-emerald-300 text-emerald-900" },
+  fwd: { id: "fwd", label: "Move Forward", icon: "⬆️", color: "bg-[#4C97FF] border-black/20 text-white" },
+  left: { id: "left", label: "Turn Left", icon: "↩️", color: "bg-[#4C97FF] border-black/20 text-white" },
+  right: { id: "right", label: "Turn Right", icon: "↪️", color: "bg-[#4C97FF] border-black/20 text-white" },
+  repeat: { id: "repeat", label: "Repeat 4×", icon: "🔁", color: "bg-[#FFAB19] border-black/20 text-white" },
+  if: { id: "if", label: "If path ahead → move", icon: "❓", color: "bg-[#FFAB19] border-black/20 text-white" },
 };
 
 // Kid-friendly auto-solver: BFS over (x,y,dir) to goal — powers 💡 Hint + ✨ Magic Solve
@@ -228,7 +228,7 @@ export default function MazePage() {
       color="from-sky-100 to-indigo-100 border-sky-200"
       controls={
         <>
-          <button onClick={reset} className="px-3 py-1.5 rounded-full bg-white border text-sm font-bold">🔄 Try Again</button>
+          <button onClick={reset} className="px-3 py-1.5 rounded-full bg-white border border-slate-200 text-slate-700 text-sm font-bold dark:bg-slate-800 dark:border-slate-700 dark:text-slate-100">🔄 Try Again</button>
           <button
             onClick={run}
             disabled={running || program.length === 0}
@@ -244,7 +244,7 @@ export default function MazePage() {
             <button
               key={l.id}
               onClick={() => !running && setIdx(i)}
-              className={`shrink-0 w-8 h-8 rounded-xl border-2 font-black text-xs grid place-items-center ${i === idx ? "bg-slate-900 text-white border-slate-900" : i < idx ? "bg-sky-600 text-white border-sky-700" : "bg-white"}`}
+              className={`shrink-0 w-8 h-8 rounded-xl border-2 font-black text-xs grid place-items-center ${i === idx ? "bg-slate-900 text-white border-slate-900 dark:bg-white dark:text-slate-900 dark:border-white" : i < idx ? "bg-sky-600 text-white border-sky-700" : "bg-white text-slate-700 border-slate-200 dark:bg-slate-800 dark:text-slate-100 dark:border-slate-600"}`}
             >
               {i < idx ? "✓" : l.id}
             </button>

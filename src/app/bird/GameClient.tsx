@@ -20,12 +20,12 @@ const LEVELS = [
 ];
 
 const PALETTE: BlockDef[] = [
-  { id: "up", label: "Fly Up", icon: "⬆️", color: "bg-sky-50 border-sky-300" },
-  { id: "down", label: "Fly Down", icon: "⬇️", color: "bg-sky-50 border-sky-300" },
-  { id: "left", label: "Fly Left", icon: "⬅️", color: "bg-amber-50 border-amber-300" },
-  { id: "right", label: "Fly Right", icon: "➡️", color: "bg-amber-50 border-amber-300" },
-  { id: "ifworm", label: "If worm ahead", icon: "🪱", color: "bg-emerald-50 border-emerald-300" },
-  { id: "repeat", label: "Repeat 3×", icon: "🔁", color: "bg-violet-50 border-violet-300" },
+  { id: "up", label: "Fly Up", icon: "⬆️", color: "bg-[#4C97FF] border-black/20 text-white" },
+  { id: "down", label: "Fly Down", icon: "⬇️", color: "bg-[#4C97FF] border-black/20 text-white" },
+  { id: "left", label: "Fly Left", icon: "⬅️", color: "bg-[#4C97FF] border-black/20 text-white" },
+  { id: "right", label: "Fly Right", icon: "➡️", color: "bg-[#4C97FF] border-black/20 text-white" },
+  { id: "ifworm", label: "If worm ahead", icon: "🪱", color: "bg-[#FFAB19] border-black/20 text-white" },
+  { id: "repeat", label: "Repeat 3×", icon: "🔁", color: "bg-[#FFAB19] border-black/20 text-white" },
 ];
 
 type BirdLevel = { size: number; bird: Pos; worm: Pos; worm2?: Pos; walls: Pos[] };
@@ -68,10 +68,10 @@ function solveBirdLevel(lvl: BirdLevel): string[] {
 }
 
 const BIRD_LOOKUP: Record<string, BlockDef> = {
-  up: { id: "up", label: "Fly Up", icon: "⬆️", color: "bg-sky-50 border-sky-300" },
-  down: { id: "down", label: "Fly Down", icon: "⬇️", color: "bg-sky-50 border-sky-300" },
-  left: { id: "left", label: "Fly Left", icon: "⬅️", color: "bg-amber-50 border-amber-300" },
-  right: { id: "right", label: "Fly Right", icon: "➡️", color: "bg-amber-50 border-amber-300" },
+  up: { id: "up", label: "Fly Up", icon: "⬆️", color: "bg-[#4C97FF] border-black/20 text-white" },
+  down: { id: "down", label: "Fly Down", icon: "⬇️", color: "bg-[#4C97FF] border-black/20 text-white" },
+  left: { id: "left", label: "Fly Left", icon: "⬅️", color: "bg-[#4C97FF] border-black/20 text-white" },
+  right: { id: "right", label: "Fly Right", icon: "➡️", color: "bg-[#4C97FF] border-black/20 text-white" },
 };
 
 export default function BirdPage() {
@@ -215,7 +215,7 @@ export default function BirdPage() {
       levelBar={
         <div className="flex gap-1.5 overflow-x-auto py-1">
           {LEVELS.map((l, i) => (
-            <button key={l.id} onClick={() => !running && setIdx(i)} className={`shrink-0 w-8 h-8 rounded-xl border-2 font-black text-xs grid place-items-center ${i === idx ? "bg-slate-900 text-white" : i < idx ? "bg-emerald-600 text-white" : "bg-white"}`}>{i < idx ? "✓" : l.id}</button>
+              <button key={l.id} onClick={() => !running && setIdx(i)} className={`shrink-0 w-8 h-8 rounded-xl border-2 font-black text-xs grid place-items-center ${i === idx ? "bg-slate-900 text-white dark:bg-white dark:text-slate-900" : i < idx ? "bg-emerald-600 text-white border-emerald-700" : "bg-white text-slate-700 border-slate-200 dark:bg-slate-800 dark:text-slate-100 dark:border-slate-600"}`}>{i < idx ? "✓" : l.id}</button>
           ))}
         </div>
       }
