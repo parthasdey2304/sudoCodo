@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
 import GameShell from "@/components/GameShell";
+import Celebration from "@/components/Celebration";
 import BlockWorkspace, { BlockDef, DroppedBlock } from "@/components/BlockWorkspace";
 import { getLevel, setLevel, setGameProgress } from "@/lib/storage";
 
@@ -91,6 +92,7 @@ export default function MazePage() {
   const [status, setStatus] = useState<"idle" | "win" | "fail">("idle");
   const [step, setStep] = useState(0);
   const [showHint, setShowHint] = useState(false);
+  const [showCeleb, setShowCeleb] = useState(false);
   const ref = useRef<number[]>([]);
   const solution = useMemo(() => solveMazeLevel(lvl), [lvl]);
 
@@ -107,6 +109,7 @@ export default function MazePage() {
     setStatus("idle");
     setStep(0);
     setShowHint(false);
+    setShowCeleb(false);
     ref.current.forEach((t) => window.clearTimeout(t));
     ref.current = [];
     setRunning(false);
@@ -163,10 +166,7 @@ export default function MazePage() {
           const next = Math.min(idx + 2, ALL_LEVELS.length);
           setLevel("maze", next);
           setGameProgress("maze", { level: next, completed: idx === ALL_LEVELS.length - 1, stars: 3 });
-          if (idx < ALL_LEVELS.length - 1) {
-            const t = window.setTimeout(() => setIdx((v) => v + 1), 1400);
-            ref.current.push(t);
-          }
+          setShowCeleb(true);
         } else {
           setStatus("fail");
           setMsg("🌟 Good try, superstar! Almost there! Tap 💡 Hint if you want help — trying again makes you smarter! 💪");
@@ -211,6 +211,7 @@ export default function MazePage() {
     setStep(0);
     setMsg(null);
     setStatus("idle");
+    setShowCeleb(false);
   };
 
   const cells = useMemo(() => {
@@ -253,6 +254,22 @@ export default function MazePage() {
       }
       canvas={
         <div className="p-3 sm:p-4">
+          <Celebration
+            open={showCeleb}
+            mascot="🧭"
+            title="MAZE CONQUERED!"
+            message={`You guided the pegman to the flag on level ${lvl.id}! Give yourself a big clap! 👏`}
+            primaryLabel={idx < ALL_LEVELS.length - 1 ? `Next → Level ${lvl.id + 1}` : "★ All mazes done!"}
+            onPrimary={() => {
+              setShowCeleb(false);
+              if (idx < ALL_LEVELS.length - 1) setIdx((v) => v + 1);
+            }}
+            secondaryLabel="🔄 Play this maze again"
+            onSecondary={() => {
+              setShowCeleb(false);
+              reset();
+            }}
+          />
           {/* Kid helpers: Hint + Magic Solve */}
           <div className="mb-3 flex flex-wrap gap-2">
             <button

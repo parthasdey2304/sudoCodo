@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import GameShell from "@/components/GameShell";
+import Celebration from "@/components/Celebration";
 import { getLevel, setLevel, setGameProgress } from "@/lib/storage";
 
 type Piece = { id: string; label: string; color: string; shape: "notch" | "plug" };
@@ -59,6 +60,7 @@ export default function PuzzlePage() {
   const [stack, setStack] = useState<Piece[]>([]);
   const [msg, setMsg] = useState<string | null>(null);
   const [ok, setOk] = useState(false);
+  const [showCeleb, setShowCeleb] = useState(false);
 
   useEffect(() => {
     const saved = getLevel("puzzle", LEVELS.length);
@@ -69,6 +71,7 @@ export default function PuzzlePage() {
     setStack([]);
     setMsg(null);
     setOk(false);
+    setShowCeleb(false);
   }, [idx, lvl.pieces]);
 
   const add = (p: Piece) => {
@@ -88,7 +91,7 @@ export default function PuzzlePage() {
       const next = Math.min(idx + 2, LEVELS.length);
       setLevel("puzzle", next);
       setGameProgress("puzzle", { level: next, completed: idx === LEVELS.length - 1, stars: 3 });
-      if (idx < LEVELS.length - 1) setTimeout(() => setIdx((v) => v + 1), 1200);
+      setShowCeleb(true);
     } else {
       setMsg("🌟 Good try, superstar! Look at the order — which piece goes first? Tap pieces to move them. You can do it! 💪🧩");
     }
@@ -118,6 +121,25 @@ export default function PuzzlePage() {
       }
       canvas={
         <div className="p-4">
+          <Celebration
+            open={showCeleb}
+            mascot="🧩"
+            title="PERFECT SNAP!"
+            message={`The pieces clicked together on level ${lvl.id}! You really understand how blocks fit! 🧱`}
+            primaryLabel={idx < LEVELS.length - 1 ? `Next → Level ${lvl.id + 1}` : "★ Puzzle master!"}
+            onPrimary={() => {
+              setShowCeleb(false);
+              if (idx < LEVELS.length - 1) setIdx((v) => v + 1);
+            }}
+            secondaryLabel="🔄 Play this puzzle again"
+            onSecondary={() => {
+              setShowCeleb(false);
+              setTray(lvl.pieces);
+              setStack([]);
+              setMsg(null);
+              setOk(false);
+            }}
+          />
           {msg && <div className={`mb-3 px-3 py-2 rounded-xl text-sm font-bold border ${ok ? "bg-emerald-50 border-emerald-200 text-emerald-800 dark:bg-emerald-950 dark:border-emerald-800 dark:text-emerald-100" : "bg-orange-50 border-orange-200 text-orange-800 dark:bg-orange-950 dark:border-orange-800 dark:text-orange-100"}`}>{msg}</div>}
           <div className="text-center">
             <div className="text-xs font-extrabold tracking-widest text-slate-500 dark:text-slate-400">{lvl.prompt.toUpperCase()}</div>
