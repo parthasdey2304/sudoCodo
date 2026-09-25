@@ -130,35 +130,72 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         <div id="main-content">{children}</div>
 
-        <footer className="border-t bg-white/60 backdrop-blur mt-12 dark:bg-slate-900/80 dark:border-slate-800" role="contentinfo">
+        <footer className="mt-12 border-t border-slate-200 bg-white/70 backdrop-blur dark:bg-slate-950 dark:border-slate-800" role="contentinfo">
           <div className="max-w-6xl mx-auto px-4 py-8">
-            <div className="grid gap-6 md:grid-cols-3 text-sm">
-              <div>
-                <h2 className="font-extrabold text-slate-900 dark:text-white">SudoCodo</h2>
-                <p className="mt-1 text-slate-600 dark:text-slate-400">
-                  Learn to code with blocks — 8 games, 60+ levels. Inspired by Blockly Games &amp; CodeMonkey Junior. Free, offline, no login.
-                </p>
+            {/* Brand banner */}
+            <div className="rounded-[20px] bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-600 p-5 sm:p-6 text-white flex flex-col sm:flex-row sm:items-center gap-4 justify-between overflow-hidden relative">
+              <div className="absolute -right-10 -top-10 w-48 h-48 rounded-full bg-white/10 blur-2xl" aria-hidden="true" />
+              <div className="relative flex items-center gap-3">
+                <div className="w-11 h-11 rounded-2xl bg-white text-indigo-700 grid place-items-center font-black text-lg shadow" aria-hidden="true">S</div>
+                <div>
+                  <p className="font-black text-lg leading-tight">SudoCodo</p>
+                  <p className="text-xs text-white/80 font-semibold">Learn to code with blocks — 8 games, 60+ levels 🎮</p>
+                </div>
               </div>
-              <nav aria-label="Footer navigation">
-                <h3 className="font-bold text-slate-900 dark:text-white">Games</h3>
-                <ul className="mt-2 space-y-1">
-                  <li><a href="/puzzle" className="hover:text-indigo-600 underline-offset-4 hover:underline">Puzzle — Learn block shapes</a></li>
-                  <li><a href="/maze" className="hover:text-indigo-600 underline-offset-4 hover:underline">Maze — Loops & logic puzzles</a></li>
-                  <li><a href="/sequencing" className="hover:text-indigo-600 underline-offset-4 hover:underline">Sequencing — CodeMonkey style</a></li>
-                  <li><a href="/bird" className="hover:text-indigo-600 underline-offset-4 hover:underline">Bird — Conditional logic</a></li>
-                  <li><a href="/turtle" className="hover:text-indigo-600 underline-offset-4 hover:underline">Turtle — Draw with code</a></li>
-                  <li><a href="/pond" className="hover:text-indigo-600 underline-offset-4 hover:underline">Pond — Code duel vs AI</a></li>
+              <div className="relative flex flex-wrap gap-2">
+                <a href="/maze" className="px-4 py-2 rounded-full bg-white text-slate-900 text-xs font-black hover:bg-yellow-300 transition">Start Playing →</a>
+                <a href="/sequencing" className="px-4 py-2 rounded-full bg-white/15 border border-white/25 text-white text-xs font-bold hover:bg-white/25 transition">CodeMonkey Style 🐒</a>
+              </div>
+            </div>
+
+            <div className="mt-6 grid gap-4 md:grid-cols-[1.1fr_1.3fr_1fr] text-sm">
+              {/* About brand */}
+              <div className="rounded-2xl border border-slate-200 bg-white p-4 dark:bg-slate-900 dark:border-slate-800">
+                <h2 className="font-extrabold text-slate-900 dark:text-white">SudoCodo</h2>
+                <p className="mt-1 text-slate-600 dark:text-slate-400 text-[13px] leading-relaxed">
+                  Free, offline, no login. Inspired by <a className="underline underline-offset-4 hover:text-indigo-600 dark:hover:text-indigo-400" href="https://blockly.games" rel="noopener noreferrer" target="_blank">Blockly Games</a> &amp;{" "}
+                  <a className="underline underline-offset-4 hover:text-indigo-600 dark:hover:text-indigo-400" href="https://app.codemonkey.com/junior/chapters/sequencing/challenges/1" rel="noopener noreferrer" target="_blank">CodeMonkey Junior</a>.
+                </p>
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                  <span className="text-[11px] font-bold px-2 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800">♾️ Unlimited</span>
+                  <span className="text-[11px] font-bold px-2 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-200 dark:bg-amber-950 dark:text-amber-300 dark:border-amber-800">💡 Hints</span>
+                  <span className="text-[11px] font-bold px-2 py-1 rounded-full bg-violet-50 text-violet-700 border border-violet-200 dark:bg-violet-950 dark:text-violet-300 dark:border-violet-800">🌙 Dark mode</span>
+                </div>
+              </div>
+
+              {/* Games nav — pill grid, portrait-friendly */}
+              <nav aria-label="Footer navigation" className="rounded-2xl border border-slate-200 bg-white p-4 dark:bg-slate-900 dark:border-slate-800">
+                <h3 className="font-bold text-slate-900 dark:text-white text-xs tracking-widest">ALL GAMES 🎮</h3>
+                <ul className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+                  <li><a href="/puzzle" className="block px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-[13px] font-semibold hover:bg-white hover:border-indigo-300 hover:text-indigo-700 transition dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200 dark:hover:border-indigo-500">🧩 Puzzle — block shapes</a></li>
+                  <li><a href="/maze" className="block px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-[13px] font-semibold hover:bg-white hover:border-indigo-300 hover:text-indigo-700 transition dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200 dark:hover:border-indigo-500">🧭 Maze — loops & puzzles</a></li>
+                  <li><a href="/sequencing" className="block px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-[13px] font-semibold hover:bg-white hover:border-indigo-300 hover:text-indigo-700 transition dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200 dark:hover:border-indigo-500">🐒 Sequencing — CodeMonkey</a></li>
+                  <li><a href="/bird" className="block px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-[13px] font-semibold hover:bg-white hover:border-indigo-300 hover:text-indigo-700 transition dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200 dark:hover:border-indigo-500">🐦 Bird — conditionals</a></li>
+                  <li><a href="/turtle" className="block px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-[13px] font-semibold hover:bg-white hover:border-indigo-300 hover:text-indigo-700 transition dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200 dark:hover:border-indigo-500">🐢 Turtle — draw code</a></li>
+                  <li><a href="/pond" className="block px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-[13px] font-semibold hover:bg-white hover:border-indigo-300 hover:text-indigo-700 transition dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200 dark:hover:border-indigo-500">🦆 Pond — duel vs AI</a></li>
+                  <li><a href="/movie" className="block px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-[13px] font-semibold hover:bg-white hover:border-indigo-300 hover:text-indigo-700 transition dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200 dark:hover:border-indigo-500">🎬 Movie — math anim</a></li>
+                  <li><a href="/music" className="block px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-[13px] font-semibold hover:bg-white hover:border-indigo-300 hover:text-indigo-700 transition dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200 dark:hover:border-indigo-500">🎵 Music — compose</a></li>
                 </ul>
               </nav>
-              <div>
-                <h3 className="font-bold text-slate-900 dark:text-white">About</h3>
+
+              {/* Privacy / tech */}
+              <div className="rounded-2xl border border-slate-200 bg-white p-4 dark:bg-slate-900 dark:border-slate-800">
+                <h3 className="font-bold text-slate-900 dark:text-white text-xs tracking-widest">PRIVATE BY DESIGN 🔒</h3>
                 <p className="mt-2 text-slate-600 dark:text-slate-400 text-xs leading-relaxed">
-                  © {new Date().getFullYear()} SudoCodo. Inspired by <a className="underline hover:text-indigo-600" href="https://blockly.games" rel="noopener noreferrer" target="_blank">Blockly Games</a> &amp;{" "}
-                  <a className="underline hover:text-indigo-600" href="https://app.codemonkey.com/junior/chapters/sequencing/challenges/1" rel="noopener noreferrer" target="_blank">CodeMonkey</a>. Progress saved in{" "}
-                  <code className="px-1 py-0.5 rounded bg-slate-100 border text-[11px]">localStorage</code> — no account needed. <a href="/sitemap.xml" className="underline hover:text-indigo-600">Sitemap</a> ·{" "}
-                  <a href="/robots.txt" className="underline hover:text-indigo-600">Robots</a>
+                  Progress saved in <code className="px-1.5 py-0.5 rounded-md bg-slate-100 border border-slate-200 text-slate-800 text-[11px] font-mono dark:bg-slate-800 dark:border-slate-700 dark:text-slate-100">localStorage</code> — no account needed, works offline.
                 </p>
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                  <a href="/sitemap.xml" className="text-[11px] font-bold px-2.5 py-1 rounded-full border border-slate-200 bg-slate-50 hover:bg-white transition dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200">Sitemap</a>
+                  <a href="/robots.txt" className="text-[11px] font-bold px-2.5 py-1 rounded-full border border-slate-200 bg-slate-50 hover:bg-white transition dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200">Robots</a>
+                  <a href="/" className="text-[11px] font-bold px-2.5 py-1 rounded-full border border-slate-200 bg-slate-50 hover:bg-white transition dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200">Home</a>
+                </div>
               </div>
+            </div>
+
+            {/* Bottom bar */}
+            <div className="mt-6 pt-4 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-500 dark:text-slate-400">
+              <p className="font-semibold">© {new Date().getFullYear()} SudoCodo — made for kids 💛</p>
+              <p className="font-medium">Portrait-first 📱 • Works offline • No login</p>
             </div>
           </div>
         </footer>
