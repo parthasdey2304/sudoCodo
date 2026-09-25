@@ -37,20 +37,21 @@ export default function Header() {
   }, [pathname]);
 
   return (
-    <header className="sticky top-0 z-50 bg-white/80 backdrop-blur border-b">
+    <header className="sticky top-0 z-50 bg-white/80 backdrop-blur border-b" role="banner">
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex items-center justify-between h-14">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-600 to-violet-500 flex items-center justify-center text-white font-black text-sm">S</div>
+          <Link href="/" className="flex items-center gap-2" aria-label="SudoCodo — Block coding games home">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-600 to-violet-500 flex items-center justify-center text-white font-black text-sm" aria-hidden="true">S</div>
             <span className="font-extrabold tracking-tight text-slate-900">Sudo<span className="text-indigo-600">Codo</span></span>
             <span className="hidden sm:inline ml-2 text-xs px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 font-semibold border">BETA</span>
           </Link>
 
-          <nav className="hidden md:flex items-center gap-1">
+          <nav className="hidden md:flex items-center gap-1" aria-label="Primary">
             {nav.map((n) => (
               <Link
                 key={n.href}
                 href={n.href}
+                aria-current={pathname === n.href ? "page" : undefined}
                 className={`px-3 py-1.5 rounded-full text-sm font-medium transition ${pathname === n.href ? "bg-slate-900 text-white" : "hover:bg-slate-100 text-slate-600"}`}
               >
                 {n.label}
